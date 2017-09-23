@@ -88,5 +88,18 @@
             Assert.IsTrue(outputCollection.Count() == 1);
             Assert.AreEqual(x, outputCollection.Single().Value1 + outputCollection.Single().Value2);
         }
+
+        [Test]
+        public void ReturnsOnePairIfTwoTheSameMatchSumWithDifferentOrder()
+        {
+            var inputCollection = new List<int> { 1, 7, 1 };
+            var x = 8;
+
+            var outputCollection = NumberTool.MatchSumOfPairs(inputCollection, x);
+
+            CollectionAssert.IsNotEmpty(outputCollection);
+            Assert.IsTrue(outputCollection.Count() == 1);
+            Assert.AreEqual(x, outputCollection.Single().Value1 + outputCollection.Single().Value2);
+        }
     }
 }
