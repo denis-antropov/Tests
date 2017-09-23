@@ -46,6 +46,7 @@
                 }
             }
 
+            // Remove duplicates
             return pairs.Distinct();
         }
     }
