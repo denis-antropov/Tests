@@ -44,6 +44,7 @@
         /// <summary>
         /// Gets the number of elements contained in queue
         /// </summary>
+        /// <exception cref="ObjectDisposedException">The instance is disposed</exception>
         public int Count
         {
             get
@@ -62,6 +63,7 @@
         /// Adds an object to the quue
         /// </summary>
         /// <param name="item">New item</param>
+        /// <exception cref="ObjectDisposedException">The instance is disposed</exception>
         public void Push(T item)
         {
             if (_disposed)
@@ -79,6 +81,7 @@
         /// If no queued items, then waits new one
         /// </summary>
         /// <returns>First item in the queue</returns>
+        /// <exception cref="ObjectDisposedException">The instance is disposed</exception>
         public T Pop()
         {
             if(_disposed)
