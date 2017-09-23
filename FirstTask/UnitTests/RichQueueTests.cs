@@ -150,7 +150,7 @@
         }
 
         [Test]
-        public void SeveralDisposeNotThrowsExceptions()
+        public void SeveralDisposeCallsNotThrowsException()
         {
             RichQueue<int> richQueue = new RichQueue<int>();
             richQueue.Dispose();

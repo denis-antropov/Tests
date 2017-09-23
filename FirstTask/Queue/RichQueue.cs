@@ -7,7 +7,7 @@
     /// <summary>
     /// Represents a queue with rich functionality
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Specifies the type of elements in the queue.</typeparam>
     public sealed class RichQueue<T> : IDisposable
     {
         /// <summary>
