@@ -50,7 +50,7 @@
             get
             {
                 if (_disposed)
-                    throw new ObjectDisposedException("Current instance is disposed");
+                    throw new ObjectDisposedException(Localization.strInstanceIsDisposed);
 
                 lock (_queue)
                 {
@@ -67,7 +67,7 @@
         public void Push(T item)
         {
             if (_disposed)
-                throw new ObjectDisposedException("Current instance is disposed");
+                throw new ObjectDisposedException(Localization.strInstanceIsDisposed);
 
             lock (_queue)
             {
@@ -85,7 +85,7 @@
         public T Pop()
         {
             if(_disposed)
-                throw new ObjectDisposedException("Current instance is disposed");
+                throw new ObjectDisposedException(Localization.strInstanceIsDisposed);
 
             lock (_popSync)
             {
