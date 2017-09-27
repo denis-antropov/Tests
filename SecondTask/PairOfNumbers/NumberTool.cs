@@ -16,32 +16,55 @@
         /// <param name="x">Required sum of pairs</param>
         /// <returns>Sum of pairs</returns>
         /// <exception cref="ArgumentNullException">inputCollection is null</exception>
+        /// <exception cref="ArgumentException">inputCollection has invalid numbers</exception>
         public static IEnumerable<ValuesPair> MatchSumOfPairs(IEnumerable<int> inputCollection, int x)
         {
             if (inputCollection == null)
                 throw new ArgumentNullException(nameof(inputCollection));
 
             var inputArray = inputCollection.ToArray();
+            Array.Sort(inputArray);
             List<ValuesPair> pairs = new List<ValuesPair>();
 
-            for (int i = 0; i < inputArray.Length; i++)
+            int lastIndex = inputArray.Length - 1;
+            for (int firstIndex = 0; firstIndex < lastIndex; )
             {
-                for (int j = i + 1; j < inputArray.Length; j++)
+                int sum = 0;
+                var firstItem = inputArray[firstIndex];
+                var lastItem = inputArray[lastIndex];
+
+                try
                 {
-                    try
+                    checked
                     {
-                        checked
-                        {
-                            if (inputArray[i] + inputArray[j] == x)
-                            {
-                                pairs.Add(new ValuesPair { Value1 = inputArray[i], Value2 = inputArray[j] });
-                            }
-                        }
+                        sum = firstItem + lastItem;
                     }
-                    catch (OverflowException)
+                }
+                catch (OverflowException ex)
+                {
+                    throw new ArgumentException(
+                        string.Format(Localization.strSumIsTooBig, 
+                            firstIndex, firstItem, lastIndex, lastItem, int.MaxValue),
+                        ex);
+                }
+                
+                if (sum == x)
+                {
+                    pairs.Add(new ValuesPair { Value1 = firstItem, Value2 = lastItem });
+                    firstIndex++;
+                    lastIndex--;
+                }
+                else
+                {
+                    if (sum < x)
                     {
-                        // Here we could throw ArgumentException,
-                        // But anyway x is Int32 therefore sum of this pair will be false
+                        // Current lastItem cannot be bigger, therefore for current firstItem there is no pair
+                        firstIndex++;
+                    }
+                    else
+                    {
+                        // Current firstItem cannot be smaller, therefore for current lastItem there is no pair
+                        lastIndex--;
                     }
                 }
             }

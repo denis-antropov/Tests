@@ -66,14 +66,12 @@
         }
 
         [Test]
-        public void ReturnsEmptyCollectionOfPairsInCaseOfOverflowSum()
+        public void ThrowsOnPairsInCaseOfOverflowSum()
         {
             var inputCollection = new List<int> { 1, 7, 2, int.MaxValue };
-            var x = int.MinValue;
+            var x = 4;
 
-            var outputCollection = NumberTool.MatchSumOfPairs(inputCollection, x);
-
-            CollectionAssert.IsEmpty(outputCollection);
+            Assert.Catch<ArgumentException>(() => NumberTool.MatchSumOfPairs(inputCollection, x));
         }
 
         [Test]
