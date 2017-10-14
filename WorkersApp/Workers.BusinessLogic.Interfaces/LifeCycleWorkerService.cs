@@ -2,6 +2,9 @@
 {
     using System;
 
+    /// <summary>
+    /// Represents base implementation of ILifeCycleService interface
+    /// </summary>
     public abstract class LifeCycleWorkerService : ILifeCycleService<Worker>
     {
         /// <summary>
@@ -13,7 +16,7 @@
             bool isNew = item.IsNew;
             if (isNew)
             {
-                item.Id = GetLastId() + 1;
+                item.Id = GetVacantId();
             }
 
             SaveInternal(item, isNew);
@@ -27,6 +30,8 @@
         {
             if (item.IsNew)
                 throw new ArgumentException(Localization.strWorkerIsNotInStore);
+
+            RollbackInternal(item);
         }
 
         /// <summary>
@@ -37,9 +42,33 @@
         {
             if (item.IsNew)
                 throw new ArgumentException(Localization.strWorkerIsNotInStore);
+
+            DeleteInternal(item);
         }
 
-        protected abstract long GetLastId();
-        protected abstract void SaveInternal(IWorker worker, bool isNew);
+        /// <summary>
+        /// Returns the next vacant Id
+        /// </summary>
+        /// <returns>The vacant Id</returns>
+        protected abstract int GetVacantId();
+
+        /// <summary>
+        /// Updates or adds the new item
+        /// </summary>
+        /// <param name="worker">Item to save</param>
+        /// <param name="isNew">A value which indicating that current worker is new or not</param>
+        protected abstract void SaveInternal(Worker worker, bool isNew);
+
+        /// <summary>
+        /// Removes this instance from store
+        /// </summary>
+        /// <param name="item">Item to delete</param>
+        protected abstract void DeleteInternal(Worker worker);
+
+        /// <summary>
+        /// Rollbacks all changes of current item
+        /// </summary>
+        /// <param name="item">Item to rollback</param>
+        protected abstract void RollbackInternal(Worker worker);
     }
 }

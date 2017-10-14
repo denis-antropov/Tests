@@ -10,7 +10,7 @@
         /// <summary>
         /// Id of worker which is not contained in the store
         /// </summary>
-        public const long InvalidId = -1;
+        public const int InvalidId = -1;
 
         /// <summary>
         /// Life cycle service
@@ -50,7 +50,7 @@
         /// <summary>
         /// Gets or sets the uniq identifier
         /// </summary>
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the surname of worker
@@ -100,25 +100,58 @@
         /// <summary>
         /// Saves changes or add it as new object to store
         /// </summary>
+        /// <exception cref="InvalidOperationException">Worker has invalid state</exception>
         public void Save()
         {
-            _lifeCycleService.Save(this);
+            try
+            {
+                _lifeCycleService.Save(this);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(Localization.strInvalidWorker, ex);
+            }
         }
 
         /// <summary>
         /// Rollbacks all changes
         /// </summary>
+        /// <exception cref="InvalidOperationException">Worker is not in the store</exception>
         public void Rollback()
         {
-            _lifeCycleService.Rollback(this);
+            try
+            {
+                _lifeCycleService.Rollback(this);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new InvalidOperationException(Localization.strInvalidWorker, ex);
+            }
         }
 
         /// <summary>
         /// Removes this instance from store
         /// </summary>
+        /// <exception cref="InvalidOperationException">Worker is not in the store</exception>
         public void Delete()
         {
-            _lifeCycleService.Delete(this);
+            try
+            {
+                _lifeCycleService.Delete(this);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new InvalidOperationException(Localization.strInvalidWorker, ex);
+            }
+        }
+
+        /// <summary>
+        /// Serves as the default hash function.
+        /// </summary>
+        /// <returns> A hash code for the current object.</returns>
+        public override int GetHashCode()
+        {
+            return Id;
         }
     }
 }

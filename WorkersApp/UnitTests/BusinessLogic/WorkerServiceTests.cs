@@ -8,6 +8,7 @@
     using Workers.BusinessLogic;
     using Workers.BusinessLogic.Interfaces;
     using Workers.DataLayer;
+    using System.IO;
 
     [TestFixture]
     public class WorkerServiceTests
@@ -48,19 +49,11 @@
         }
 
         [Test]
-        public void RollbackThrowsOnNonExistentInStore()
-        {
-            var worker = _workerService.CreateNew();
-
-            Assert.Catch<ArgumentException>(() => worker.Rollback());
-        }
-
-        [Test]
         public void DeleteThrowsOnNonExistentInStore()
         {
             var worker = _workerService.CreateNew();
 
-            Assert.Catch<ArgumentException>(() => worker.Delete());
+            Assert.Catch<InvalidOperationException>(() => worker.Delete());
         }
 
         [Test]
@@ -70,6 +63,7 @@
 
             CollectionAssert.AreEquivalent(
                 GetMockEntities().Select(e => e.Id), workers.Select(w => w.Id));
+            Assert.IsFalse(workers.Any(w => w.IsNew));
         }
 
         [Test]
@@ -96,6 +90,64 @@
             worker2.Save();
 
             Assert.IsTrue(worker1.Id != worker2.Id);
+        }
+
+        [Test]
+        public void ProhibitsSaveWorkerWhichIdChangedUsingReflection()
+        {
+            var worker = _workerService.CreateNew();
+            var propertyId = worker.GetType().GetProperty("Id");
+            propertyId.SetValue(worker, 26);
+
+            Assert.Catch<InvalidOperationException>(() => worker.Save());
+        }
+
+        [Test]
+        public void RemoveThrowsOnNewWorker()
+        {
+            var worker = _workerService.CreateNew();
+
+            Assert.Catch<InvalidOperationException>(() => worker.Delete());
+        }
+
+        [Test]
+        public void RemovesWorkerFromStore()
+        {
+            bool deleteCalled = false;
+            _repository.Setup(r => r.Delete(It.IsAny<WorkerEntity>())).Callback(() => deleteCalled = true);
+            var worker = _workerService.GetWorkers().First();
+            worker.Delete();
+
+            CollectionAssert.DoesNotContain(_workerService.GetWorkers().Select(w => w.Id), worker.Id);
+            Assert.IsTrue(deleteCalled);
+        }
+
+        [Test]
+        public void ProhibitsDeleteWorkerWhichIdChangedUsingReflection()
+        {
+            var worker = _workerService.CreateNew();
+            var propertyId = worker.GetType().GetProperty("Id");
+            propertyId.SetValue(worker, 5);
+
+            Assert.Catch<InvalidOperationException>(() => worker.Delete());
+        }
+
+        [Test]
+        public void RollbackThrowsOnNewWorker()
+        {
+            var worker = _workerService.CreateNew();
+
+            Assert.Catch<InvalidOperationException>(() => worker.Rollback());
+        }
+
+        [Test]
+        public void RollbacksWorkerFromStore()
+        {
+            var worker = _workerService.GetWorkers().First();
+            worker.Name = "Zina";
+            worker.Rollback();
+
+            Assert.AreNotEqual("Zina", worker.Name);
         }
     }
 }

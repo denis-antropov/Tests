@@ -6,45 +6,128 @@
     using DataLayer;
     using Interfaces;
 
-    public class WorkerService : LifeCycleWorkerService, IWorkersService
+    /// <summary>
+    /// Represents a service which works with Workers store
+    /// </summary>
+    public sealed class WorkerService : LifeCycleWorkerService, IWorkersService
     {
+        /// <summary>
+        /// Repository of workers
+        /// </summary>
         private readonly IRepository<WorkerEntity> _repository;
-        private readonly List<IWorker> _workers;
 
+        /// <summary>
+        /// Map of workers and them entities
+        /// </summary>
+        private Dictionary<Worker, WorkerEntity> _workers;
+
+        /// <summary>
+        /// Initializes a new instance of the Worker class
+        /// </summary>
+        /// <param name="repository">Repository of workers</param>
+        /// <exception cref="ArgumentNullException">repository is null</exception>
         public WorkerService(IRepository<WorkerEntity> repository)
         {
             if (repository == null) throw new ArgumentNullException("repository");
 
             _repository = repository;
-            _workers = new List<IWorker>();
         }
 
+        /// <summary>
+        /// Gets lazy list of workers
+        /// </summary>
+        private Dictionary<Worker, WorkerEntity> Workers
+        {
+            get
+            {
+                if (_workers == null)
+                {
+                    _workers = new Dictionary<Worker, WorkerEntity>();
+                    _repository
+                        .GetEntities()
+                        .ToList()
+                        .ForEach(e => Workers.Add(MapToWorker(e), e));
+                }
+
+                return _workers;
+            }
+        }
+
+        /// <summary>
+        /// Returns a list of Workers from the store
+        /// </summary>
+        /// <returns>A list of Workers from the store</returns>
         public IEnumerable<IWorker> GetWorkers()
         {
-            if(!_workers.Any())
-            {
-                _workers.AddRange(_repository.GetEntities().Select(MapToWorker));
-            }
-
-            return _workers;
+            return Workers.Keys;
         }
 
+        /// <summary>
+        /// Created an instance of IWorker type
+        /// </summary>
+        /// <returns>A new instance of IWorker type</returns>
         public IWorker CreateNew()
         {
             return new Worker(this) { Id = Worker.InvalidId };
         }
 
-        protected override void SaveInternal(IWorker worker, bool isNew)
+        /// <summary>
+        /// Updates or adds the new item
+        /// </summary>
+        /// <param name="worker">Item to save</param>
+        /// <param name="isNew">A value which indicating that current worker is new or not</param>
+        protected override void SaveInternal(Worker worker, bool isNew)
         {
-            if(isNew)
+            WorkerEntity entity;
+            if (isNew)
             {
-                _workers.Add(worker);
+                entity = MapToWorkerEntity(worker);
+                Workers.Add(worker, entity);
+            }
+            else if(!Workers.TryGetValue(worker, out entity))
+            {
+                throw new ArgumentException(Localization.strNotFoundWorker);
             }
 
-            _repository.Save(MapToWorkerEntity(worker));
+            _repository.Save(entity);
         }
 
-        protected override long GetLastId()
+        /// <summary>
+        /// Removes this instance from store
+        /// </summary>
+        /// <param name="item">Item to delete</param>
+        protected override void DeleteInternal(Worker worker)
+        {
+            WorkerEntity entity;
+            if (!Workers.TryGetValue(worker, out entity))
+            {
+                throw new ArgumentException(Localization.strNotFoundWorker);
+            }
+
+            Workers.Remove(worker);
+            _repository.Delete(entity);
+        }
+
+        /// <summary>
+        /// Rollbacks all changes of current item
+        /// </summary>
+        /// <param name="item">Item to rollback</param>
+        protected override void RollbackInternal(Worker worker)
+        {
+            WorkerEntity entity;
+            if (!Workers.TryGetValue(worker, out entity))
+            {
+                throw new ArgumentException(Localization.strNotFoundWorker);
+            }
+
+            MapToWorker(worker, entity);
+        }
+
+        /// <summary>
+        /// Returns the next vacant Id
+        /// </summary>
+        /// <returns>The vacant Id</returns>
+        protected override int GetVacantId()
         {
             var worker = GetWorkers().OrderByDescending(e => e.Id).FirstOrDefault();
             if (worker == null)
@@ -52,23 +135,42 @@
                 return 0;
             }
 
-            return worker.Id;
+            return worker.Id + 1;
         }
 
-        private IWorker MapToWorker(WorkerEntity entity)
+        /// <summary>
+        /// Maps source entity to target worker
+        /// </summary>
+        /// <param name="worker">Target worker</param>
+        /// <param name="entity">Source entity</param>
+        private void MapToWorker(Worker worker, WorkerEntity entity)
         {
-            return new Worker(this)
-            {
-                Id = entity.Id,
-                Name = entity.Name,
-                Surname = entity.Surname,
-                Birthday = entity.Birthday,
-                Sex = (Sex)entity.Sex,
-                HasChildren = Convert.ToBoolean(entity.HasChildren)
-            };
+            worker.Id = (int)entity.Id;
+            worker.Name = entity.Name;
+            worker.Surname = entity.Surname;
+            worker.Birthday = entity.Birthday;
+            worker.Sex = (Sex)entity.Sex;
+            worker.HasChildren = Convert.ToBoolean(entity.HasChildren);
         }
 
-        private WorkerEntity MapToWorkerEntity(IWorker entity)
+        /// <summary>
+        /// Maps source entity to target worker
+        /// </summary>
+        /// <param name="entity">Source entity</param>
+        /// <returns>Target worker</returns>
+        private Worker MapToWorker(WorkerEntity entity)
+        {
+            var worker = new Worker(this);
+            MapToWorker(worker, entity);
+            return worker;
+        }
+
+        /// <summary>
+        /// Maps source worker to target entity
+        /// </summary>
+        /// <param name="worker">Source worker</param>
+        /// <returns>Target entity</returns>
+        private WorkerEntity MapToWorkerEntity(Worker entity)
         {
             return new WorkerEntity
             {

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Workers.BusinessLogic.Interfaces {
+namespace Workers.BusinessLogic {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Workers.BusinessLogic.Interfaces {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Workers.BusinessLogic.Interfaces.Localization", typeof(Localization).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Workers.BusinessLogic.Localization", typeof(Localization).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,11 @@ namespace Workers.BusinessLogic.Interfaces {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid worker.
+        ///   Looks up a localized string similar to Cannot find this worker in the store.
         /// </summary>
-        internal static string strInvalidWorker {
+        internal static string strNotFoundWorker {
             get {
-                return ResourceManager.GetString("strInvalidWorker", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to do operation. Current worker is not contained in the store.
-        /// </summary>
-        internal static string strWorkerIsNotInStore {
-            get {
-                return ResourceManager.GetString("strWorkerIsNotInStore", resourceCulture);
+                return ResourceManager.GetString("strNotFoundWorker", resourceCulture);
             }
         }
     }

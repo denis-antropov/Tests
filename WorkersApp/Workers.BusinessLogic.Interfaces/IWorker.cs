@@ -15,7 +15,7 @@
         /// <summary>
         /// Gets the uniq identifier
         /// </summary>
-        long Id { get; }
+        int Id { get; }
 
         /// <summary>
         /// Gets or sets the surname of worker
@@ -50,11 +50,13 @@
         /// <summary>
         /// Rollbacks all changes
         /// </summary>
+        /// <exception cref="InvalidOperationException">Worker is not in the store</exception>
         void Rollback();
 
         /// <summary>
         /// Removes this instance from store
         /// </summary>
+        /// <exception cref="InvalidOperationException">Worker is not in the store</exception>
         void Delete();
     }
 }
