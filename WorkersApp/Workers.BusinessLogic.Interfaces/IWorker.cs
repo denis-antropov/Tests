@@ -20,11 +20,13 @@
         /// <summary>
         /// Gets or sets the surname of worker
         /// </summary>
+        /// <exception cref="ArgumentException">Surname cannot be null or empty</exception>
         string Surname { get; set; }
 
         /// <summary>
         /// Gets or sets the name of worker
         /// </summary>
+        /// <exception cref="ArgumentException">Name cannot be null or empty</exception>
         string Name { get; set; }
 
         /// <summary>

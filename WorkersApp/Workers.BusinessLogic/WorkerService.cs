@@ -28,7 +28,7 @@
         /// <exception cref="ArgumentNullException">repository is null</exception>
         public WorkerService(IRepository<WorkerEntity> repository)
         {
-            if (repository == null) throw new ArgumentNullException("repository");
+            if (repository == null) throw new ArgumentNullException(nameof(repository));
 
             _repository = repository;
         }

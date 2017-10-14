@@ -17,17 +17,29 @@
         private readonly IWorker _worker;
 
         /// <summary>
+        /// The name of worker
+        /// </summary>
+        private string _name;
+
+        /// <summary>
+        /// The surname of worker
+        /// </summary>
+        private string _surname;
+
+        /// <summary>
         /// Initializes a new instance of the WorkerViewModel class
         /// </summary>
         /// <param name="worker">Worker instance</param>
         /// <exception cref="ArgumentNullException">worker is null</exception>
         public WorkerViewModel(IWorker worker)
         {
-            if (worker == null) throw new ArgumentNullException("worker");
+            if (worker == null) throw new ArgumentNullException(nameof(worker));
 
             _worker = worker;
-            SaveCommand = new RelayCommand(() => _worker.Save(), Validate);
-            CancelCommand = new RelayCommand(() => _worker.Rollback());
+            SaveCommand = new RelayCommand(() => Save(), Validate);
+            CancelCommand = new RelayCommand(() => Rollback());
+            _name = worker.Name;
+            _surname = worker.Surname;
         }
 
         /// <summary>
@@ -49,11 +61,11 @@
             {
                 switch (columnName)
                 {
-                  case "Name":
+                  case nameof(Name):
                     if (string.IsNullOrWhiteSpace(Name))
                         return Localization.strNameIsEmpty;
                     break;
-                  case "Surname":
+                  case nameof(Surname):
                     if (string.IsNullOrWhiteSpace(Surname))
                         return Localization.strSurnameIsEmpty;
                     break; 
@@ -64,7 +76,7 @@
         }
 
         /// <summary>
-        /// Gets save command
+        /// Gets the save command
         /// </summary>
         public ICommand SaveCommand { get; private set; }
 
@@ -80,13 +92,13 @@
         {
             get
             {
-                return _worker.Name;
+                return _name;
             }
             set
             {
-                if (Name != value)
+                if (_name != value)
                 {
-                    _worker.Name = value;
+                    _name = value;
                     OnPropertyChanged();
                 }
             }
@@ -99,13 +111,13 @@
         {
             get
             {
-                return _worker.Surname;
+                return _surname;
             }
             set
             {
-                if (Surname != value)
+                if (_surname != value)
                 {
-                    _worker.Surname = value;
+                    _surname = value;
                     OnPropertyChanged();
                 }
             }
@@ -174,13 +186,33 @@
         /// <returns>True, if no error; otherwise - false</returns>
         private bool Validate()
         {
-            if (this["Name"] == string.Empty &&
-                this["Surname"] == string.Empty)
+            if (this[nameof(Name)] == string.Empty &&
+                this[nameof(Surname)] == string.Empty)
             {
                 return true;
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Updates or adds the new item in the store
+        /// </summary>
+        private void Save()
+        {
+            _worker.Name = _name;
+            _worker.Surname = _surname;
+            _worker.Save();
+        }
+
+        /// <summary>
+        /// Rollbacks all changes of this worker
+        /// </summary>
+        private void Rollback()
+        {
+            _worker.Rollback();
+            _name = _worker.Name;
+            _surname = _worker.Surname;
         }
     }
 }

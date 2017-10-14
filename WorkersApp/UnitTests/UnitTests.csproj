@@ -52,6 +52,7 @@
     <Compile Include="BusinessLogic\WorkerServiceTests.cs" />
     <Compile Include="BusinessLogic\WorkerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\WorkerListViewModelTests.cs" />
     <Compile Include="ViewModels\WorkerViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>

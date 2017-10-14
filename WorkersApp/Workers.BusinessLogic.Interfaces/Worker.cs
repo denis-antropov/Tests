@@ -34,7 +34,7 @@
         /// <exception cref="ArgumentNullException">lifeCycleService is null</exception>
         public Worker(ILifeCycleService<Worker> lifeCycleService)
         {
-            if (lifeCycleService == null) throw new ArgumentNullException("lifeCycleService");
+            if (lifeCycleService == null) throw new ArgumentNullException(nameof(lifeCycleService));
 
             _lifeCycleService = lifeCycleService;
         }
@@ -55,6 +55,7 @@
         /// <summary>
         /// Gets or sets the surname of worker
         /// </summary>
+        /// <exception cref="ArgumentException">Surname cannot be null or empty</exception>
         public string Surname
         {
             get { return _surname; }
@@ -70,6 +71,7 @@
         /// <summary>
         /// Gets or sets the name of worker
         /// </summary>
+        /// <exception cref="ArgumentException">Name cannot be null or empty</exception>
         public string Name
         {
             get { return _name; }

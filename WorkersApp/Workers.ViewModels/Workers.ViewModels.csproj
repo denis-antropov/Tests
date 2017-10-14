@@ -42,12 +42,15 @@
   <ItemGroup>
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\ViewModelBase.cs" />
+    <Compile Include="IWorkerModifier.cs" />
     <Compile Include="Localization.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Localization.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WorkerItem.cs" />
+    <Compile Include="WorkerListViewModel.cs" />
     <Compile Include="WorkerViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
