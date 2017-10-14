@@ -23,9 +23,14 @@
             return _ctx.Workers.FirstOrDefault(x => x.Id == id);
         }
 
+        public void Add(WorkerEntity entity)
+        {
+            _ctx.Workers.Add(entity);
+            _ctx.SaveChanges();
+        }
+
         public void Save(WorkerEntity entity)
         {
-            _ctx.Workers.Attach(entity);
             _ctx.SaveChanges();
         }
 

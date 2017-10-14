@@ -72,11 +72,11 @@
         /// <summary>
         /// Gets the Sex of worker
         /// </summary>
-        public Sex Sex
+        public bool Sex
         {
             get
             {
-                return Worker.Sex;
+                return Convert.ToBoolean((int)Worker.Sex);
             }
         }
 

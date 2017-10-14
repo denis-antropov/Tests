@@ -8,6 +8,7 @@
 
         T Get(long id);
         void Save(T entity);
+        void Add(T entity);
         void Delete(T entity);
     }
 }

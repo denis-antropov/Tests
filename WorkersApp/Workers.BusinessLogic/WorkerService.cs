@@ -46,7 +46,7 @@
                     _repository
                         .GetEntities()
                         .ToList()
-                        .ForEach(e => Workers.Add(MapToWorker(e), e));
+                        .ForEach(e => _workers.Add(MapToWorker(e), e));
                 }
 
                 return _workers;
@@ -83,6 +83,9 @@
             {
                 entity = MapToWorkerEntity(worker);
                 Workers.Add(worker, entity);
+                _repository.Add(entity);
+
+                return;
             }
             else if(!Workers.TryGetValue(worker, out entity))
             {

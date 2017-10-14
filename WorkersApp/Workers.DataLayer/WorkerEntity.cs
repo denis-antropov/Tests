@@ -2,7 +2,9 @@
 namespace Workers.DataLayer
 {
     using System;
+    using System.ComponentModel.DataAnnotations.Schema;
 
+    [Table("Workers")]
     public class WorkerEntity
     {
         public long Id { get; set; }

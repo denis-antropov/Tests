@@ -70,7 +70,7 @@
         public void SaveResetsNewIdFlagAndSavesInStore()
         {
             bool saveCalled = false;
-            _repository.Setup(r => r.Save(It.IsAny<WorkerEntity>())).Callback(() => saveCalled = true);
+            _repository.Setup(r => r.Add(It.IsAny<WorkerEntity>())).Callback(() => saveCalled = true);
 
             var worker = _workerService.CreateNew();
             worker.Save();

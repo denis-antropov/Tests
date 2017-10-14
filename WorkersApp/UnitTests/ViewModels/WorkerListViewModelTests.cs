@@ -48,7 +48,8 @@
         [Test]
         public void ThrowsOnNullWorkerService()
         {
-            Assert.Catch<ArgumentNullException>(() => new WorkerListViewModel(null, _workerModifier.Object));
+            IWorkersService service = null;
+            Assert.Catch<ArgumentNullException>(() => new WorkerListViewModel(service, _workerModifier.Object));
         }
 
         [Test]

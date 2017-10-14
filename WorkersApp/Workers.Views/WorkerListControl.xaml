@@ -4,15 +4,34 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
+             xmlns:viewModels="clr-namespace:Workers.ViewModels;assembly=Workers.ViewModels"
+             xmlns:views="clr-namespace:Workers.Views"
+             d:DataContext="{d:DesignInstance Type=viewModels:WorkerListViewModel, IsDesignTimeCreatable=False}"
              d:DesignHeight="300" d:DesignWidth="500">
+    <UserControl.Resources>
+        <views:SexConverter x:Key="SexConverter" />
+    </UserControl.Resources>
+    
     <DockPanel LastChildFill="True">
+        
         <ToolBar DockPanel.Dock="Top">
-            <Button Content="New"/>
-            <Button Content="Edit"/>
-            <Button Content="Remove"/>
+            <Button Content="New" Command="{Binding CreateWorkerCommand}"/>
+            <Button Content="Edit" Command="{Binding EditWorkerCommand}"/>
+            <Button Content="Remove" Command="{Binding DeleteWorkerCommand}"/>
         </ToolBar>
-        <ListView>
-
+        
+        <ListView ItemsSource="{Binding Workers}"
+                  SelectedItem="{Binding SelectedWorker}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" />
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Surname" DisplayMemberBinding="{Binding Surname}" />
+                    <GridViewColumn Header="Birthday" DisplayMemberBinding="{Binding Birthday}" />
+                    <GridViewColumn Header="Sex" DisplayMemberBinding="{Binding Sex, Converter={StaticResource SexConverter}}" />
+                    <GridViewColumn Header="Has children" DisplayMemberBinding="{Binding HasChildren}" />
+                </GridView>
+            </ListView.View>
         </ListView>
     </DockPanel>
 </UserControl>

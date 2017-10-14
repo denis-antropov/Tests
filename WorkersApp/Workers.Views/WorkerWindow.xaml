@@ -1,12 +1,17 @@
-﻿<Window x:Class="Workers.Views.WorkerControl"
+﻿<Window x:Class="Workers.Views.WorkerWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Workers.Views"
+             xmlns:viewModels="clr-namespace:Workers.ViewModels;assembly=Workers.ViewModels"
+             xmlns:views="clr-namespace:Workers.Views"
+             d:DataContext="{d:DesignInstance Type=viewModels:WorkerViewModel, IsDesignTimeCreatable=False}"
              mc:Ignorable="d"  Title="Edit worker"
-             d:DesignHeight="200" d:DesignWidth="300" 
+             Height="200" Width="300" 
             ShowInTaskbar="False" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <Window.Resources>
+        <views:SexConverter x:Key="SexConverter" />
+    </Window.Resources>
     <DockPanel LastChildFill="True">
         <Grid DockPanel.Dock="Top" VerticalAlignment="Center">
             <Grid.Resources>
@@ -24,6 +29,7 @@
                 </Style>
                 <Style TargetType="CheckBox">
                     <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="Margin" Value="3" />
                 </Style>
             </Grid.Resources>
             
@@ -40,16 +46,19 @@
             </Grid.RowDefinitions>
             
             <TextBlock Grid.Column="0" Grid.Row="0" Text="Name" />
-            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Name}" />
+            <TextBox Grid.Column="1" Grid.Row="0" 
+                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
 
             <TextBlock Grid.Column="0" Grid.Row="1" Text="Surame" />
-            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Surname}" />
+            <TextBox Grid.Column="1" Grid.Row="1" 
+                     Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
             
             <TextBlock Grid.Column="0" Grid.Row="2" Text="Birthday" />
             <DatePicker Grid.Column="1" Grid.Row="2" Text="{Binding Birthday}" />
             
             <TextBlock Grid.Column="0" Grid.Row="3" Text="Sex" />
-            <CheckBox Grid.Column="1" Grid.Row="3" IsChecked="{Binding Sex}" />
+            <CheckBox Grid.Column="1" Grid.Row="3" IsChecked="{Binding Sex}" 
+                      Content="{Binding Sex, Converter={StaticResource SexConverter}}" />
             
             <TextBlock Grid.Column="0" Grid.Row="4" Text="Has children" />
             <CheckBox Grid.Column="1" Grid.Row="4" IsChecked="{Binding HasChildren}" />
@@ -61,9 +70,9 @@
                     <Setter Property="Margin" Value="3" />
                 </Style>
             </StackPanel.Resources>
-            
-            <Button Content="Save" />
-            <Button Content="Cancel" />
+
+            <Button Content="Save" Command="{Binding SaveCommand}" IsDefault="True" Click="SaveButton_Click" />
+            <Button Content="Cancel" Command="{Binding CancelCommand}" IsCancel="True" />
         </StackPanel>
     </DockPanel>
 </Window>

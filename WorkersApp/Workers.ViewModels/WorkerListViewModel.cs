@@ -46,6 +46,7 @@
             DeleteWorkerCommand = new RelayCommand(() => DeleteWorker(), () => SelectedWorker != null);
             EditWorkerCommand = new RelayCommand(() => EditWorker(), () => SelectedWorker != null);
             CreateWorkerCommand = new RelayCommand(() => CreateWorker());
+            Workers.GetType();
         }
 
         /// <summary>
