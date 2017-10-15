@@ -72,19 +72,19 @@
             _workerViewModel.PropertyChanged += (o, e) => calledPropertyName = e.PropertyName;
 
             _workerViewModel.Name = "Petya";
-            Assert.AreEqual("Name", calledPropertyName);
+            Assert.AreEqual(nameof(_workerViewModel.Name), calledPropertyName);
 
             _workerViewModel.Surname = "Petrov";
-            Assert.AreEqual("Surname", calledPropertyName);
+            Assert.AreEqual(nameof(_workerViewModel.Surname), calledPropertyName);
 
             _workerViewModel.Birthday = new DateTime(1990, 4, 10);
-            Assert.AreEqual("Birthday", calledPropertyName);
+            Assert.AreEqual(nameof(_workerViewModel.Birthday), calledPropertyName);
 
             _workerViewModel.Sex = false;
-            Assert.AreEqual("Sex", calledPropertyName);
+            Assert.AreEqual(nameof(_workerViewModel.Sex), calledPropertyName);
 
             _workerViewModel.HasChildren = false;
-            Assert.AreEqual("HasChildren", calledPropertyName);
+            Assert.AreEqual(nameof(_workerViewModel.HasChildren), calledPropertyName);
         }
 
         [Test]

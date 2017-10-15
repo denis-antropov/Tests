@@ -68,7 +68,7 @@
         /// <returns>A new instance of IWorker type</returns>
         public IWorker CreateNew()
         {
-            return new Worker(this) { Id = Worker.InvalidId };
+            return new Worker(this) { Id = Worker.InvalidId, Birthday = DateTime.Now };
         }
 
         /// <summary>

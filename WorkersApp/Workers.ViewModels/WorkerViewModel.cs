@@ -210,9 +210,12 @@
         /// </summary>
         private void Rollback()
         {
-            _worker.Rollback();
-            _name = _worker.Name;
-            _surname = _worker.Surname;
+            if (!_worker.IsNew)
+            {
+                _worker.Rollback();
+                _name = _worker.Name;
+                _surname = _worker.Surname;
+            }
         }
     }
 }

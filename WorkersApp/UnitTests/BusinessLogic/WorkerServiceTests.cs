@@ -96,7 +96,7 @@
         public void ProhibitsSaveWorkerWhichIdChangedUsingReflection()
         {
             var worker = _workerService.CreateNew();
-            var propertyId = worker.GetType().GetProperty("Id");
+            var propertyId = worker.GetType().GetProperty(nameof(worker.Id));
             propertyId.SetValue(worker, 26);
 
             Assert.Catch<InvalidOperationException>(() => worker.Save());
@@ -126,7 +126,7 @@
         public void ProhibitsDeleteWorkerWhichIdChangedUsingReflection()
         {
             var worker = _workerService.CreateNew();
-            var propertyId = worker.GetType().GetProperty("Id");
+            var propertyId = worker.GetType().GetProperty(nameof(worker.Id));
             propertyId.SetValue(worker, 5);
 
             Assert.Catch<InvalidOperationException>(() => worker.Delete());

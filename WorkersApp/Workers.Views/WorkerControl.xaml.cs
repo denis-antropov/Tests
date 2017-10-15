@@ -24,5 +24,15 @@
         {
             DialogResult = true;
         }
+
+        /// <summary>
+        /// Event handler of Cancel
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">Event arguments</param>
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+        }
     }
 }

@@ -28,6 +28,11 @@
         private ObservableCollection<WorkerItem> _workers;
 
         /// <summary>
+        /// The seletected worker item
+        /// </summary>
+        private WorkerItem _selcectedWorker;
+
+        /// <summary>
         /// Initializes a new instance of the WorkerItem class
         /// </summary>
         /// <param name="workersService">Worker service</param>
@@ -72,7 +77,16 @@
         /// <summary>
         /// Gets or sets the seletected worker item
         /// </summary>
-        public WorkerItem SelectedWorker { get; set; }
+        public WorkerItem SelectedWorker
+        {
+            get { return _selcectedWorker; }
+            set
+            {
+                _selcectedWorker = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         /// <summary>
         /// Gets the delete worker command
@@ -107,8 +121,9 @@
             var newWorker = _workersService.CreateNew();
             if(_workerModifier.Modify(newWorker))
             {
-                SelectedWorker = new WorkerItem(newWorker);
-                Workers.Add(SelectedWorker);
+                var newWorkerItem = new WorkerItem(newWorker);
+                Workers.Add(newWorkerItem);
+                SelectedWorker = newWorkerItem;
             }
         }
 

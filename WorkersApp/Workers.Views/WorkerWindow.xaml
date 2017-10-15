@@ -12,6 +12,7 @@
     <Window.Resources>
         <views:SexConverter x:Key="SexConverter" />
     </Window.Resources>
+    
     <DockPanel LastChildFill="True">
         <Grid DockPanel.Dock="Top" VerticalAlignment="Center">
             <Grid.Resources>
@@ -37,6 +38,7 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
+            
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
@@ -54,7 +56,7 @@
                      Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
             
             <TextBlock Grid.Column="0" Grid.Row="2" Text="Birthday" />
-            <DatePicker Grid.Column="1" Grid.Row="2" Text="{Binding Birthday}" />
+            <DatePicker Grid.Column="1" Grid.Row="2" SelectedDate="{Binding Birthday}" />
             
             <TextBlock Grid.Column="0" Grid.Row="3" Text="Sex" />
             <CheckBox Grid.Column="1" Grid.Row="3" IsChecked="{Binding Sex}" 
@@ -71,8 +73,10 @@
                 </Style>
             </StackPanel.Resources>
 
-            <Button Content="Save" Command="{Binding SaveCommand}" IsDefault="True" Click="SaveButton_Click" />
-            <Button Content="Cancel" Command="{Binding CancelCommand}" IsCancel="True" />
+            <Button Content="Save" Command="{Binding SaveCommand}" IsDefault="True" 
+                    Click="SaveButton_Click" />
+            <Button Content="Cancel" Command="{Binding CancelCommand}" IsCancel="True"
+                    Click="CancelButton_Click" />
         </StackPanel>
     </DockPanel>
 </Window>

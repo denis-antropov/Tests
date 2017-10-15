@@ -147,6 +147,20 @@
         }
 
         [Test]
+        public void SelectedWorkerNotifiesIfChanged()
+        {
+            var selectedWorkerChangedCalled = false;
+            _workerList.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(_workerList.SelectedWorker))
+                    selectedWorkerChangedCalled = true;
+            };
+            _workerList.SelectedWorker = _workerList.Workers.First();
+
+            Assert.IsTrue(selectedWorkerChangedCalled);
+        }
+
+        [Test]
         public void CannotExecuteEditIfSelectedWorkerIsNull()
         {
             _workerList.SelectedWorker = null;
