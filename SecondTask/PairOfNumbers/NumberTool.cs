@@ -27,7 +27,8 @@
             List<ValuesPair> pairs = new List<ValuesPair>();
 
             int lastIndex = inputArray.Length - 1;
-            for (int firstIndex = 0; firstIndex < lastIndex; )
+            int firstIndex = 0;
+            while (firstIndex < lastIndex)
             {
                 int sum = 0;
                 var firstItem = inputArray[firstIndex];
