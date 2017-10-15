@@ -145,17 +145,17 @@
         /// <summary>
         /// Gets or sets the Sex of worker
         /// </summary>
-        public bool Sex
+        public Sex Sex
         {
             get
             {
-                return Convert.ToBoolean((int)_worker.Sex);
+                return _worker.Sex;
             }
             set
             {
                 if (Sex != value)
                 {
-                    _worker.Sex = (Sex)Convert.ToInt32(value);
+                    _worker.Sex = value;
                     OnPropertyChanged();
                 }
             }

@@ -28,7 +28,7 @@
                     <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
                     <GridViewColumn Header="Surname" DisplayMemberBinding="{Binding Surname}" />
                     <GridViewColumn Header="Birthday" DisplayMemberBinding="{Binding Birthday, StringFormat=d}" />
-                    <GridViewColumn Header="Sex" DisplayMemberBinding="{Binding Sex, Converter={StaticResource SexConverter}}" />
+                    <GridViewColumn Header="Sex" DisplayMemberBinding="{Binding Sex}" />
                     <GridViewColumn Header="Has children" DisplayMemberBinding="{Binding HasChildren}" />
                 </GridView>
             </ListView.View>

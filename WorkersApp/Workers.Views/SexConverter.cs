@@ -3,8 +3,9 @@
     using System;
     using System.Globalization;
     using System.Windows.Data;
+    using Workers.BusinessLogic.Interfaces;
 
-    [ValueConversion(typeof(bool), typeof(string))]
+    [ValueConversion(typeof(Sex), typeof(bool))]
     public class SexConverter : IValueConverter
     {
         /// <summary>
@@ -17,12 +18,7 @@
         /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is bool)
-            {
-                return (bool)value ? Localization.strMale : Localization.strFemale;
-            }
-
-            return value;
+            return ((Sex)value) == Sex.Male;
         }
 
         /// <summary>
@@ -35,7 +31,7 @@
         /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return Binding.DoNothing;
+            return (bool)value ? Sex.Male : Sex.Female;
         }
     }
 }

@@ -51,7 +51,7 @@
             Assert.AreEqual(_worker.Object.Name, _workerViewModel.Name);
             Assert.AreEqual(_worker.Object.Surname, _workerViewModel.Surname);
             Assert.AreEqual(_worker.Object.Birthday, _workerViewModel.Birthday);
-            Assert.AreEqual((int)_worker.Object.Sex, Convert.ToInt32(_workerViewModel.Sex));
+            Assert.AreEqual(_worker.Object.Sex, _workerViewModel.Sex);
             Assert.AreEqual(_worker.Object.HasChildren, _workerViewModel.HasChildren);
         }
 
@@ -80,7 +80,7 @@
             _workerViewModel.Birthday = new DateTime(1990, 4, 10);
             Assert.AreEqual(nameof(_workerViewModel.Birthday), calledPropertyName);
 
-            _workerViewModel.Sex = false;
+            _workerViewModel.Sex = Sex.Female;
             Assert.AreEqual(nameof(_workerViewModel.Sex), calledPropertyName);
 
             _workerViewModel.HasChildren = false;

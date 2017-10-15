@@ -71,6 +71,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Workers.BusinessLogic.Interfaces\Workers.BusinessLogic.Interfaces.csproj">
+      <Project>{90dcbd4d-5674-4d8c-8f44-6e7979d5f761}</Project>
+      <Name>Workers.BusinessLogic.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Workers.ViewModels\Workers.ViewModels.csproj">
       <Project>{0cc7b98c-d6e7-4b4a-84e8-07b1c477a01d}</Project>
       <Name>Workers.ViewModels</Name>
