@@ -1,15 +1,17 @@
 ﻿namespace Workers.ViewModels
 {
     using System;
+    using System.Collections;
     using System.ComponentModel;
     using System.Windows.Input;
     using BusinessLogic.Interfaces;
     using Common;
+    using System.Linq;
 
     /// <summary>
     /// Represents view model of worker
     /// </summary>
-    public class WorkerViewModel : ViewModelBase, IDataErrorInfo
+    public class WorkerViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         /// <summary>
         /// Worker instance
@@ -26,6 +28,8 @@
         /// </summary>
         private string _surname;
 
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+
         /// <summary>
         /// Initializes a new instance of the WorkerViewModel class
         /// </summary>
@@ -40,39 +44,6 @@
             CancelCommand = new RelayCommand(() => Rollback());
             _name = worker.Name;
             _surname = worker.Surname;
-        }
-
-        /// <summary>
-        ///  Gets an error message indicating what is wrong with this object.
-        /// </summary>
-        public string Error
-        {
-            get { return string.Empty; }
-        }
-
-        /// <summary>
-        /// Gets the error message for the property with the given name.
-        /// </summary>
-        /// <param name="columnName">The name of the property whose error message to get.</param>
-        /// <returns>The error message for the property. The default is an empty string ("").</returns>
-        public string this[string columnName]
-        {
-            get
-            {
-                switch (columnName)
-                {
-                  case nameof(Name):
-                    if (string.IsNullOrWhiteSpace(Name))
-                        return Localization.strNameIsEmpty;
-                    break;
-                  case nameof(Surname):
-                    if (string.IsNullOrWhiteSpace(Surname))
-                        return Localization.strSurnameIsEmpty;
-                    break; 
-                }
-
-                return string.Empty;
-            }
         }
 
         /// <summary>
@@ -100,6 +71,7 @@
                 {
                     _name = value;
                     OnPropertyChanged();
+                    ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(nameof(Name)));
                 }
             }
         }
@@ -119,6 +91,7 @@
                 {
                     _surname = value;
                     OnPropertyChanged();
+                    ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(nameof(Surname)));
                 }
             }
         }
@@ -180,19 +153,15 @@
             }
         }
 
+        public bool HasErrors => GetErrors(nameof(Name)).Cast<string>().Any() || GetErrors(nameof(Surname)).Cast<string>().Any();
+
         /// <summary>
         /// Validates view model
         /// </summary>
         /// <returns>True, if no error; otherwise - false</returns>
         private bool Validate()
         {
-            if (this[nameof(Name)] == string.Empty &&
-                this[nameof(Surname)] == string.Empty)
-            {
-                return true;
-            }
-
-            return false;
+            return !HasErrors;
         }
 
         /// <summary>
@@ -216,6 +185,23 @@
                 _name = _worker.Name;
                 _surname = _worker.Surname;
             }
+        }
+
+        public IEnumerable GetErrors(string propertyName)
+        {
+            switch (propertyName)
+            {
+                case nameof(Name):
+                    if (string.IsNullOrWhiteSpace(Name))
+                        return new string[] { Localization.strNameIsEmpty };
+                    break;
+                case nameof(Surname):
+                    if (string.IsNullOrWhiteSpace(Surname))
+                        return new string[] { Localization.strSurnameIsEmpty };
+                    break;
+            }
+
+            return new string[0];
         }
     }
 }

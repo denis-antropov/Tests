@@ -49,11 +49,11 @@
             
             <TextBlock Grid.Column="0" Grid.Row="0" Text="Name" />
             <TextBox Grid.Column="1" Grid.Row="0" 
-                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
 
             <TextBlock Grid.Column="0" Grid.Row="1" Text="Surame" />
             <TextBox Grid.Column="1" Grid.Row="1" 
-                     Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                     Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
             
             <TextBlock Grid.Column="0" Grid.Row="2" Text="Birthday" />
             <DatePicker Grid.Column="1" Grid.Row="2" SelectedDate="{Binding Birthday}" />

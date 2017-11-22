@@ -39,7 +39,11 @@ namespace Workers.ViewModels {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
+#if Portable
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Workers.ViewModels.Localization", typeof(Localization).GetTypeInfo().Assembly);
+#else
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Workers.ViewModels.Localization", typeof(Localization).Assembly);
+#endif
                     resourceMan = temp;
                 }
                 return resourceMan;

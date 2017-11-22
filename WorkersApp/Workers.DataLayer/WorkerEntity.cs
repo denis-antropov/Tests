@@ -1,12 +1,13 @@
 ﻿namespace Workers.DataLayer
 {
     using System;
-    using System.ComponentModel.DataAnnotations.Schema;
 
+#if !Portable
     /// <summary>
     /// Represents a entity for Worker presentation
     /// </summary>
-    [Table("Workers")]
+    [System.ComponentModel.DataAnnotations.Schema.Table("Workers")]
+#endif
     public class WorkerEntity
     {
         /// <summary>
