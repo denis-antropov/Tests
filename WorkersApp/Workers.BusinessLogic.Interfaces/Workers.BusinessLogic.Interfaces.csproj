@@ -7,7 +7,7 @@
     <ProjectGuid>{90DCBD4D-5674-4D8C-8F44-6E7979D5F761}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Workers.BusinessLogic.Interfaces</RootNamespace>
+    <RootNamespace>Workers.BusinessLogic</RootNamespace>
     <AssemblyName>Workers.BusinessLogic.Interfaces</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

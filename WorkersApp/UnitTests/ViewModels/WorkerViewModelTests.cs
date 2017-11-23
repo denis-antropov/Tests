@@ -3,8 +3,8 @@
     using System;
     using Moq;
     using NUnit.Framework;
-    using Workers.BusinessLogic.Interfaces;
     using Workers.ViewModels;
+    using Workers.BusinessLogic;
 
     [TestFixture]
     public class WorkerViewModelTests

@@ -1,4 +1,4 @@
-﻿namespace Workers.BusinessLogic.Interfaces
+﻿namespace Workers.BusinessLogic
 {
     using System;
 

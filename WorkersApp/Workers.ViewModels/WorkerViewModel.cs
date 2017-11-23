@@ -4,9 +4,9 @@
     using System.Collections;
     using System.ComponentModel;
     using System.Windows.Input;
-    using BusinessLogic.Interfaces;
     using Common;
     using System.Linq;
+    using Workers.BusinessLogic;
 
     /// <summary>
     /// Represents view model of worker

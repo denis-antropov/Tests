@@ -4,7 +4,7 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows.Input;
-    using Workers.BusinessLogic.Interfaces;
+    using Workers.BusinessLogic;
     using Workers.ViewModels.Common;
 
     /// <summary>
@@ -64,10 +64,10 @@
                 if (_workers == null)
                 {
                     _workers = new ObservableCollection<WorkerItem>();
-                    _workersService
-                        .GetWorkers()
-                        .ToList()
-                        .ForEach(w => _workers.Add(new WorkerItem(w)));
+                    foreach (var w in _workersService.GetWorkers())
+                    {
+                        _workers.Add(new WorkerItem(w));
+                    }
                 }
 
                 return _workers;

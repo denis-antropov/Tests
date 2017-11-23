@@ -66,9 +66,7 @@
         /// <exception cref="ArgumentNullException">Parameter execute is null</exception>
         public RelayCommand(Action execute, Func<bool> canExecute, Func<Exception, bool> exceptionHandler)
         {
-            if (execute == null) throw new ArgumentNullException("execute");
-
-            _execute = execute;
+            _execute = execute ?? throw new ArgumentNullException("execute");
             _canExecute = canExecute;
             _exceptionHandler = exceptionHandler;
         }
@@ -76,11 +74,7 @@
         /// <summary>
         /// Occurs when changes occur that affect whether or not the command should execute.
         /// </summary>
-        public event EventHandler CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
+        public event EventHandler CanExecuteChanged;
 
         /// <summary>
         /// Defines the method that determines whether the command can execute in its current state.

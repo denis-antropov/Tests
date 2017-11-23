@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using DataLayer;
-    using Interfaces;
 
     /// <summary>
     /// Represents a service which works with Workers store
@@ -43,10 +42,10 @@
                 if (_workers == null)
                 {
                     _workers = new Dictionary<Worker, WorkerEntity>();
-                    _repository
-                        .GetEntities()
-                        .ToList()
-                        .ForEach(e => _workers.Add(MapToWorker(e), e));
+                    foreach (var e in _repository.GetEntities())
+                    {
+                        _workers.Add(MapToWorker(e), e);
+                    }
                 }
 
                 return _workers;

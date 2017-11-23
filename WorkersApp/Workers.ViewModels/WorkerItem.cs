@@ -1,7 +1,7 @@
 ﻿namespace Workers.ViewModels
 {
     using System;
-    using Workers.BusinessLogic.Interfaces;
+    using Workers.BusinessLogic;
 
     /// <summary>
     /// Represents simple view model of worker

@@ -1,4 +1,4 @@
-﻿namespace Workers.BusinessLogic.Interfaces
+﻿namespace Workers.BusinessLogic
 {
     /// <summary>
     /// Represent an enumeration of sex

@@ -53,9 +53,6 @@
     <Compile Include="..\..\Workers.BusinessLogic.Interfaces\Worker.cs">
       <Link>BusinessLogicLayer\Worker.cs</Link>
     </Compile>
-    <Compile Include="..\..\Workers.BusinessLogic\Localization.Designer.cs">
-      <Link>BusinessLogicLayer\Localization.Designer.cs</Link>
-    </Compile>
     <Compile Include="..\..\Workers.BusinessLogic\WorkerService.cs">
       <Link>BusinessLogicLayer\WorkerService.cs</Link>
     </Compile>
@@ -72,29 +69,40 @@
       <Link>ViewModels\Common\ViewModelBase.cs</Link>
     </Compile>
     <Compile Include="..\..\Workers.ViewModels\IWorkerModifier.cs">
-      <Link>PresentationLayer\ViewModels\IWorkerModifier.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Workers.ViewModels\Localization.Designer.cs">
-      <Link>PresentationLayer\ViewModels\Localization.Designer.cs</Link>
+      <Link>ViewModels\IWorkerModifier.cs</Link>
     </Compile>
     <Compile Include="..\..\Workers.ViewModels\WorkerItem.cs">
-      <Link>PresentationLayer\ViewModels\WorkerItem.cs</Link>
+      <Link>ViewModels\WorkerItem.cs</Link>
     </Compile>
     <Compile Include="..\..\Workers.ViewModels\WorkerListViewModel.cs">
-      <Link>PresentationLayer\ViewModels\WorkerListViewModel.cs</Link>
+      <Link>ViewModels\WorkerListViewModel.cs</Link>
     </Compile>
     <Compile Include="..\..\Workers.ViewModels\WorkerViewModel.cs">
-      <Link>PresentationLayer\ViewModels\WorkerViewModel.cs</Link>
+      <Link>ViewModels\WorkerViewModel.cs</Link>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BusinessLogic\Localization.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Localization.resx</DependentUpon>
     </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\Localization.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Localization.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="BusinessLogic\Localization.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Localization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
@@ -102,6 +110,10 @@
     <EmbeddedResource Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewModels\Localization.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Localization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 ﻿namespace Workers.ViewModels
 {
-    using Workers.BusinessLogic.Interfaces;
+    using Workers.BusinessLogic;
 
     /// <summary>
     /// Represents a worker modifier which allows to modify worker instance

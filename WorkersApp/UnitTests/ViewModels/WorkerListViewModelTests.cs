@@ -3,10 +3,10 @@
     using System;
     using Moq;
     using NUnit.Framework;
-    using Workers.BusinessLogic.Interfaces;
     using Workers.ViewModels;
     using System.Collections.Generic;
     using System.Linq;
+    using Workers.BusinessLogic;
 
     [TestFixture]
     public class WorkerListViewModelTests

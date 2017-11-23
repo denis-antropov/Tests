@@ -3,7 +3,7 @@
     using System;
     using System.Globalization;
     using System.Windows.Data;
-    using Workers.BusinessLogic.Interfaces;
+    using Workers.BusinessLogic;
 
     [ValueConversion(typeof(Sex), typeof(bool))]
     public class SexConverter : IValueConverter

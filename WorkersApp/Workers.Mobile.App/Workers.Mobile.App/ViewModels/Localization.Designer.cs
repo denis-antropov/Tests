@@ -8,8 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Workers.BusinessLogic {
+namespace Workers.ViewModels {
     using System;
+    using System.Reflection;
     
     
     /// <summary>
@@ -39,7 +40,7 @@ namespace Workers.BusinessLogic {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Workers.BusinessLogic.Localization", typeof(Localization).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Workers.ViewModels.Localization", typeof(Localization).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +62,29 @@ namespace Workers.BusinessLogic {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid worker.
+        ///   Looks up a localized string similar to The method can not be called.
         /// </summary>
-        internal static string strInvalidWorker {
+        internal static string strMethodCannotBeCalled {
             get {
-                return ResourceManager.GetString("strInvalidWorker", resourceCulture);
+                return ResourceManager.GetString("strMethodCannotBeCalled", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to do operation. Current worker is not contained in the store.
+        ///   Looks up a localized string similar to Name cannot be empty.
         /// </summary>
-        internal static string strWorkerIsNotInStore {
+        internal static string strNameIsEmpty {
             get {
-                return ResourceManager.GetString("strWorkerIsNotInStore", resourceCulture);
+                return ResourceManager.GetString("strNameIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Surname cannot be empty.
+        /// </summary>
+        internal static string strSurnameIsEmpty {
+            get {
+                return ResourceManager.GetString("strSurnameIsEmpty", resourceCulture);
             }
         }
     }

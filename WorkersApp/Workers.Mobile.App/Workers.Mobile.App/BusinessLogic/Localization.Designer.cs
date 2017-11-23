@@ -10,6 +10,7 @@
 
 namespace Workers.BusinessLogic {
     using System;
+    using System.Reflection;
     
     
     /// <summary>
@@ -39,7 +40,7 @@ namespace Workers.BusinessLogic {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Workers.BusinessLogic.Localization", typeof(Localization).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Workers.BusinessLogic.Localization", typeof(Localization).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -66,6 +67,15 @@ namespace Workers.BusinessLogic {
         internal static string strInvalidWorker {
             get {
                 return ResourceManager.GetString("strInvalidWorker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot find this worker in the store.
+        /// </summary>
+        internal static string strNotFoundWorker {
+            get {
+                return ResourceManager.GetString("strNotFoundWorker", resourceCulture);
             }
         }
         

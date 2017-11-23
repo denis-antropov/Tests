@@ -6,7 +6,6 @@
     using Moq;
     using NUnit.Framework;
     using Workers.BusinessLogic;
-    using Workers.BusinessLogic.Interfaces;
     using Workers.DataLayer;
     using System.IO;
 

@@ -1,4 +1,4 @@
-﻿namespace Workers.BusinessLogic.Interfaces
+﻿namespace Workers.BusinessLogic
 {
     /// <summary>
     /// Represents an interface which manages the domain object in store

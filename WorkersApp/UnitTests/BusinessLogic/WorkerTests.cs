@@ -3,7 +3,7 @@
     using System;
     using Moq;
     using NUnit.Framework;
-    using Workers.BusinessLogic.Interfaces;
+    using Workers.BusinessLogic;
 
     [TestFixture]
     public class WorkerTests

@@ -2,7 +2,6 @@
 {
     using System;
     using Workers.BusinessLogic;
-    using Workers.BusinessLogic.Interfaces;
     using Workers.DataLayer;
     using Workers.ViewModels;
     using Workers.Views;
