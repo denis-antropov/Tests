@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Workers.Views.WorkersPage">
+
+    <ListView ItemsSource="{Binding Workers}"
+              SelectedItem="{Binding SelectedWorker, Mode=TwoWay}"
+              CachingStrategy="RecycleElement">
+            
+        <!--Custom View Cells-->
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="{Binding Id, StringFormat='{0})'}" 
+                                Style="{DynamicResource ListItemTextStyle}" />
+                            <Label Text="{Binding Name}" Margin="4,0,4,0" 
+                                Style="{DynamicResource ListItemTextStyle}" />
+                            <Label Text="{Binding Surname}" 
+                                Style="{DynamicResource ListItemTextStyle}" />
+                        </StackLayout>
+                        <StackLayout>
+                            <Label Text="{Binding Sex}" Margin="10,0,4,0" 
+                                Style="{DynamicResource ListItemDetailTextStyle}"/>
+                            <Label Text="{Binding Birthday}" 
+                                Style="{DynamicResource ListItemDetailTextStyle}"/>
+                        </StackLayout>
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+        
+    </ListView>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Name="Add..." Order="Primary" Priority="0" Command="{Binding CreateWorkerCommand}" />
+        <ToolbarItem Name="Edit..." Order="Primary" Priority="1" Command="{Binding EditWorkerCommand}" />
+        <ToolbarItem Name="Remove" Order="Primary" Priority="2" Command="{Binding DeleteWorkerCommand}" />
+    </ContentPage.ToolbarItems>
+</ContentPage>

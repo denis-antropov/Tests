@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Workers.Views.WorkerPage">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Label Grid.Column="0" Grid.Row="0" Text="Name" />
+            <Entry Grid.Column="1" Grid.Row="0" Text="{Binding Name}" />
+
+            <Label Grid.Column="0" Grid.Row="1" Text="Surame" />
+            <Entry Grid.Column="1" Grid.Row="1" Text="{Binding Surname}" />
+
+            <Label Grid.Column="0" Grid.Row="2" Text="Birthday" />
+            <!--<DatePicker Grid.Column="1" Grid.Row="2" SelectedDate="{Binding Birthday}" />-->
+
+            <Label Grid.Column="0" Grid.Row="3" Text="Sex" />
+            <!--<CheckBox Grid.Column="1" Grid.Row="3" 
+                      IsChecked="{Binding Sex, Converter={StaticResource SexConverter}}" >
+                <Label Text="{Binding Sex}" Margin="0" />
+            </CheckBox>-->
+
+            <Label Grid.Column="0" Grid.Row="4" Text="Has children" />
+            <!--<CheckBox Grid.Column="1" Grid.Row="4" IsChecked="{Binding HasChildren}" />-->
+        </Grid>
+
+       
+    </ContentPage.Content>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Name="Save" Order="Primary" Priority="0" Command="{Binding SaveCommand}" />
+        <ToolbarItem Name="Cancel" Order="Primary" Priority="1" Command="{Binding CancelCommand}" />
+    </ContentPage.ToolbarItems>
+</ContentPage>

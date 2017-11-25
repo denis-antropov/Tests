@@ -134,7 +134,7 @@
         {
             if (_workerModifier.Modify(SelectedWorker.Worker))
             {
-                SelectedWorker.Refrech();
+                SelectedWorker.Refresh();
             }
         }
     }

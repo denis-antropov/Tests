@@ -94,7 +94,7 @@
         /// <summary>
         /// Notifies about properties changes
         /// </summary>
-        public void Refrech()
+        public void Refresh()
         {
             OnPropertyChanged(nameof(Id));
             OnPropertyChanged(nameof(Name));
