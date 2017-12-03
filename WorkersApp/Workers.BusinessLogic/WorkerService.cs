@@ -80,13 +80,18 @@
             WorkerEntity entity;
             if (isNew)
             {
-                entity = MapToWorkerEntity(worker);
+                entity = new WorkerEntity();
+                MapToWorkerEntity(worker, new WorkerEntity());
                 Workers.Add(worker, entity);
                 _repository.Add(entity);
 
                 return;
             }
-            else if(!Workers.TryGetValue(worker, out entity))
+            else if(Workers.TryGetValue(worker, out entity))
+            {
+                MapToWorkerEntity(worker, entity);
+            }
+            else
             {
                 throw new ArgumentException(Localization.strNotFoundWorker);
             }
@@ -172,17 +177,14 @@
         /// </summary>
         /// <param name="worker">Source worker</param>
         /// <returns>Target entity</returns>
-        private WorkerEntity MapToWorkerEntity(Worker entity)
+        private void MapToWorkerEntity(Worker worker, WorkerEntity entity)
         {
-            return new WorkerEntity
-            {
-                Id = entity.Id,
-                Name = entity.Name,
-                Surname = entity.Surname,
-                Birthday = entity.Birthday,
-                Sex = (long)entity.Sex,
-                HasChildren = Convert.ToInt64(entity.HasChildren)
-            };
+            entity.Id = worker.Id;
+            entity.Name = worker.Name;
+            entity.Surname = worker.Surname;
+            entity.Birthday = worker.Birthday;
+            entity.Sex = (long)worker.Sex;
+            entity.HasChildren = Convert.ToInt64(worker.HasChildren);
         }
     }
 }

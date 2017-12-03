@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Microsoft.EntityFrameworkCore;
 
     /// <summary>
     /// Represents an implementation of IRepository interface for WorkerEntity class
@@ -16,9 +17,11 @@
         /// <summary>
         /// Initializes a new instance of the WorkersRepository class
         /// </summary>
-        public WorkersRepository()
+        public WorkersRepository(string repositoryPath)
         {
-            _ctx = new WorkersDbContext();
+            _ctx = new WorkersDbContext(repositoryPath);
+            _ctx.Database.EnsureCreated();
+            _ctx.Database.Migrate();
         }
 
         /// <summary>

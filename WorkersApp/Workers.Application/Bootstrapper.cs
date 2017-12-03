@@ -1,6 +1,7 @@
 ﻿namespace Workers
 {
     using System;
+    using System.IO;
     using Workers.BusinessLogic;
     using Workers.DataLayer;
     using Workers.ViewModels;
@@ -22,7 +23,7 @@
         /// <returns>WorkerListViewModel instance</returns>
         public static WorkerListViewModel GetWorkerList()
         {
-            _repository = new WorkersRepository();
+            _repository = new WorkersRepository(Path.Combine(Environment.CurrentDirectory, "workers.db"));
             var workersService = new WorkerService(_repository);
             var workerModifier = new WorkerModifier();
             var workerList = new WorkerListViewModel(workersService, workerModifier);

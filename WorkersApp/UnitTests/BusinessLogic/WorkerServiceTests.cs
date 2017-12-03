@@ -80,6 +80,25 @@
         }
 
         [Test]
+        public void SaveMapsDataToExistentEntity()
+        {
+            WorkerEntity entity = null;
+            _repository.Setup(r => r.Save(It.IsAny<WorkerEntity>())).Callback<WorkerEntity>(e => entity = e);
+
+            var worker = _workerService.GetWorkers().First();
+            worker.Name = "Olya";
+            worker.Surname = "Sidorova";
+            worker.Sex = Sex.Female;
+
+            worker.Save();
+
+            Assert.IsNotNull(entity);
+            Assert.AreEqual(worker.Name, entity.Name);
+            Assert.AreEqual(worker.Surname, entity.Surname);
+            Assert.AreEqual((long)worker.Sex, entity.Sex);
+        }
+
+        [Test]
         public void TwoSavesIndicatesTwoIndexes()
         {
             var worker1 = _workerService.CreateNew();
