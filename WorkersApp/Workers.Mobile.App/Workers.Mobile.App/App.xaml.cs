@@ -7,20 +7,20 @@ using Workers.DataLayer;
 using Workers.ViewModels;
 using Workers.Views;
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace Workers.Mobile.App
 {
+    //[XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class App : Application
     {
         /// <summary>
         /// Instance of repository
         /// </summary>
-        private static WorkersDataAccess _repository;
+        private WorkersRepository _repository;
 
         public App()
         {
-            InitializeComponent();
-
             WorkersPage page = new WorkersPage();
             page.BindingContext = GetWorkerList();
 
@@ -31,9 +31,10 @@ namespace Workers.Mobile.App
         /// Returns WorkerListViewModel instance
         /// </summary>
         /// <returns>WorkerListViewModel instance</returns>
-        public static WorkerListViewModel GetWorkerList()
+        public WorkerListViewModel GetWorkerList()
         {
-            _repository = new WorkersDataAccess();
+            var databasePath = DependencyService.Get<IDbFilePathProvider>().GetFilePath();
+            _repository = new WorkersRepository(databasePath);
             var workersService = new WorkerService(_repository);
             var workerModifier = new WorkerModifier();
             var workerList = new WorkerListViewModel(workersService, workerModifier);
@@ -55,6 +56,7 @@ namespace Workers.Mobile.App
         {
             // Handle when your app resumes
         }
+
 
         /// <summary>
         /// Simple implementation of worker modified, based on WorkerWindow

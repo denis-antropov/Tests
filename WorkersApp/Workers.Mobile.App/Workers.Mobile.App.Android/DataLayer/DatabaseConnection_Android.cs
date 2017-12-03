@@ -3,15 +3,14 @@ namespace Workers.DataLayer
 {
     using System.IO;
 
-    //[assembly:Xamarin.Forms.Dependency(typeof(DatabaseConnection_Android))]
-    public class DatabaseConnection_Android : IDatabaseConnection
+    public class DatabaseConnection_Android : IDbFilePathProvider
     {
-        public SQLite.SQLiteConnection DbConnection()
+        public string GetFilePath()
         {
             var dbName = "WorkersDb.db3";
             var path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), dbName);
 
-            return new SQLite.SQLiteConnection(path);
+            return path;
         }
     }
 }

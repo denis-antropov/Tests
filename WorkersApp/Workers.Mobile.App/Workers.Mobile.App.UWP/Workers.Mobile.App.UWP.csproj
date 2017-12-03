@@ -153,6 +153,22 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Workers.BusinessLogic.Interfaces\Workers.BusinessLogic.Interfaces.csproj">
+      <Project>{90dcbd4d-5674-4d8c-8f44-6e7979d5f761}</Project>
+      <Name>Workers.BusinessLogic.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Workers.BusinessLogic\Workers.BusinessLogic.csproj">
+      <Project>{0bfddb0f-da3d-4972-9fed-76b8068e7883}</Project>
+      <Name>Workers.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Workers.DataLayer\Workers.DataLayer.csproj">
+      <Project>{a0cb88e8-04fa-423d-9404-73d4df9baf49}</Project>
+      <Name>Workers.DataLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Workers.ViewModels\Workers.ViewModels.csproj">
+      <Project>{0cc7b98c-d6e7-4b4a-84e8-07b1c477a01d}</Project>
+      <Name>Workers.ViewModels</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Workers.Mobile.App\Workers.Mobile.App.csproj">
       <Project>{869275b4-74cb-43b1-a56b-43b4dcb46311}</Project>
       <Name>Workers.Mobile.App</Name>
