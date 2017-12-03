@@ -2,8 +2,7 @@
 {
     using System;
     using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Windows.Input;
+    using System.Runtime.CompilerServices;
     using Workers.BusinessLogic;
     using Workers.ViewModels.Common;
 
@@ -40,14 +39,9 @@
         /// <exception cref="ArgumentNullException">workersService or workerModifier is null</exception>
         public WorkerListViewModel(IWorkersService workersService, IWorkerModifier workerModifier)
         {
-            if (workersService == null)
-                throw new ArgumentNullException(nameof(workersService));
+            _workersService = workersService ?? throw new ArgumentNullException(nameof(workersService));
+            _workerModifier = workerModifier ?? throw new ArgumentNullException(nameof(workerModifier));
 
-            if (workerModifier == null)
-                throw new ArgumentNullException(nameof(workerModifier));
-
-            _workersService = workersService;
-            _workerModifier = workerModifier;
             DeleteWorkerCommand = new RelayCommand(() => DeleteWorker(), () => SelectedWorker != null);
             EditWorkerCommand = new RelayCommand(() => EditWorker(), () => SelectedWorker != null);
             CreateWorkerCommand = new RelayCommand(() => CreateWorker());
@@ -86,22 +80,21 @@
                 OnPropertyChanged();
             }
         }
-
-
+        
         /// <summary>
         /// Gets the delete worker command
         /// </summary>
-        public ICommand DeleteWorkerCommand { get; set; }
+        public RelayCommand DeleteWorkerCommand { get; private set; }
 
         /// <summary>
         /// Gets the create worker command
         /// </summary>
-        public ICommand CreateWorkerCommand { get; set; }
+        public RelayCommand CreateWorkerCommand { get; private set; }
 
         /// <summary>
         /// Gets the edit worker command
         /// </summary>
-        public ICommand EditWorkerCommand { get; set; }
+        public RelayCommand EditWorkerCommand { get; private set; }
 
         /// <summary>
         /// Deletes the selected worker
@@ -136,6 +129,18 @@
             {
                 SelectedWorker.Refresh();
             }
+        }
+
+        /// <summary>
+        /// Notifies about changed property
+        /// </summary>
+        /// <param name="propertyName">Name of changed property</param>
+        protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            base.OnPropertyChanged(propertyName);
+
+            DeleteWorkerCommand.RaiseCanExecuteChanged();
+            EditWorkerCommand.RaiseCanExecuteChanged();
         }
     }
 }

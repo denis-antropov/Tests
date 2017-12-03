@@ -126,7 +126,7 @@
         {
             var worker = _workerService.CreateNew();
             var propertyId = worker.GetType().GetProperty(nameof(worker.Id));
-            propertyId.SetValue(worker, 5);
+            propertyId.SetValue(worker, 26);
 
             Assert.Catch<InvalidOperationException>(() => worker.Delete());
         }

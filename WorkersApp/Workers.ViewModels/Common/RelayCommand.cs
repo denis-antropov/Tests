@@ -117,5 +117,13 @@
                 }
             }
         }
+
+        /// <summary>
+        /// Raises event that Can execute could be changed
+        /// </summary>
+        public void RaiseCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

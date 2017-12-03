@@ -3,10 +3,10 @@
     using System;
     using System.Collections;
     using System.ComponentModel;
-    using System.Windows.Input;
     using Common;
     using System.Linq;
     using Workers.BusinessLogic;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// Represents view model of worker
@@ -28,6 +28,10 @@
         /// </summary>
         private string _surname;
 
+        /// <summary>
+        /// Occurs when the validation errors have changed for a property or for the entire
+        /// entity.
+        /// </summary>
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
         /// <summary>
@@ -49,12 +53,12 @@
         /// <summary>
         /// Gets the save command
         /// </summary>
-        public ICommand SaveCommand { get; private set; }
+        public RelayCommand SaveCommand { get; private set; }
 
         /// <summary>
         /// Gets cancel command
         /// </summary>
-        public ICommand CancelCommand { get; private set; }
+        public RelayCommand CancelCommand { get; private set; }
 
         /// <summary>
         /// Gets or sets the name of worker
@@ -71,7 +75,6 @@
                 {
                     _name = value;
                     OnPropertyChanged();
-                    ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(nameof(Name)));
                 }
             }
         }
@@ -91,7 +94,6 @@
                 {
                     _surname = value;
                     OnPropertyChanged();
-                    ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(nameof(Surname)));
                 }
             }
         }
@@ -153,6 +155,9 @@
             }
         }
 
+        /// <summary>
+        /// Gets a value that indicates whether the entity has validation errors.
+        /// </summary>
         public bool HasErrors => GetErrors(nameof(Name)).Cast<string>().Any() || GetErrors(nameof(Surname)).Cast<string>().Any();
 
         /// <summary>
@@ -187,6 +192,14 @@
             }
         }
 
+        /// <summary>
+        /// Gets the validation errors for a specified property or for the entire entity.
+        /// </summary>
+        /// <param name="propertyName">
+        /// The name of the property to retrieve validation errors for; or null or System.String.Empty,
+        /// to retrieve entity-level errors.
+        /// </param>
+        /// <returns>The validation errors for the property or entity.</returns>
         public IEnumerable GetErrors(string propertyName)
         {
             switch (propertyName)
@@ -202,6 +215,18 @@
             }
 
             return new string[0];
+        }
+
+        /// <summary>
+        /// Notifies about changed property
+        /// </summary>
+        /// <param name="propertyName">Name of changed property</param>
+        protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            base.OnPropertyChanged(propertyName);
+
+            SaveCommand.RaiseCanExecuteChanged();
+            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(nameof(Surname)));
         }
     }
 }
