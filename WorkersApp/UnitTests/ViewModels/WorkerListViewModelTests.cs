@@ -123,10 +123,11 @@
             var newWorker = new Mock<IWorker>();
             newWorker.SetupGet(w => w.Id).Returns(() => 55);
             _workerService.Setup(s => s.CreateNew()).Returns(() => newWorker.Object);
-            _workerModifier.Setup(m => m.Modify(It.IsAny<IWorker>()))
-                .Returns(() => true);
 
             _workerList.CreateWorkerCommand.Execute(null);
+            _workerModifier.Raise(
+                m => m.ModificationFinished += null, 
+                new ModificationStateEventArgs(true, newWorker.Object));
 
             CollectionAssert.Contains(_workerList.Workers.Select(w => w.Id), 55);
             Assert.AreEqual(55, _workerList.SelectedWorker.Id);
@@ -138,10 +139,11 @@
             var newWorker = new Mock<IWorker>();
             newWorker.SetupGet(w => w.Id).Returns(() => 55);
             _workerService.Setup(s => s.CreateNew()).Returns(() => newWorker.Object);
-            _workerModifier.Setup(m => m.Modify(It.IsAny<IWorker>()))
-                .Returns(() => false);
 
             _workerList.CreateWorkerCommand.Execute(null);
+            _workerModifier.Raise(
+                m => m.ModificationFinished += null,
+                new ModificationStateEventArgs(false, newWorker.Object));
 
             CollectionAssert.DoesNotContain(_workerList.Workers.Select(w => w.Id), 55);
         }
@@ -198,11 +200,11 @@
             var notificationCalled = false;
             workerItemToEdit.PropertyChanged += (s, e) => notificationCalled = true;
 
-            _workerModifier.Setup(m => m.Modify(It.IsAny<IWorker>()))
-                .Returns(() => true);
-
             _workerList.SelectedWorker = workerItemToEdit;
             _workerList.EditWorkerCommand.Execute(null);
+            _workerModifier.Raise(
+                m => m.ModificationFinished += null,
+                new ModificationStateEventArgs(true, workerToEdit.Object));
 
             Assert.IsTrue(notificationCalled);
         }
@@ -216,11 +218,11 @@
             var notificationCalled = false;
             workerItemToEdit.PropertyChanged += (s, e) => notificationCalled = true;
 
-            _workerModifier.Setup(m => m.Modify(It.IsAny<IWorker>()))
-                .Returns(() => false);
-
             _workerList.SelectedWorker = workerItemToEdit;
             _workerList.EditWorkerCommand.Execute(null);
+            _workerModifier.Raise(
+                m => m.ModificationFinished += null,
+                new ModificationStateEventArgs(false, workerToEdit.Object));
 
             Assert.IsFalse(notificationCalled);
         }

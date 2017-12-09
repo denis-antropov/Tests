@@ -38,6 +38,7 @@
     </StackLayout>
 
     <ContentPage.ToolbarItems>
+        <ToolbarItem Name="Click" Clicked="Button_Click" />
         <ToolbarItem Name="Add..." Order="Primary" Priority="0" Command="{Binding CreateWorkerCommand}" />
         <ToolbarItem Name="Edit..." Order="Primary" Priority="1" Command="{Binding EditWorkerCommand}" />
         <ToolbarItem Name="Remove" Order="Primary" Priority="2" Command="{Binding DeleteWorkerCommand}" />

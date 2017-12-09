@@ -68,15 +68,16 @@
         [Test]
         public void SaveResetsNewIdFlagAndSavesInStore()
         {
-            bool saveCalled = false;
-            _repository.Setup(r => r.Add(It.IsAny<WorkerEntity>())).Callback(() => saveCalled = true);
+            WorkerEntity entity = null;
+            _repository.Setup(r => r.Add(It.IsAny<WorkerEntity>())).Callback<WorkerEntity>(e => entity = e);
 
             var worker = _workerService.CreateNew();
             worker.Save();
                         
             Assert.IsFalse(worker.IsNew);
             CollectionAssert.Contains(_workerService.GetWorkers().Select(w => w.Id), worker.Id);
-            Assert.IsTrue(saveCalled);
+            Assert.IsNotNull(entity);
+            Assert.AreEqual(worker.Id, entity.Id);
         }
 
         [Test]

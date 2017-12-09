@@ -16,5 +16,10 @@ namespace Workers.Views
         {
             InitializeComponent();
         }
+
+        private async void Button_Click(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new WorkerPage());
+        }
     }
 }

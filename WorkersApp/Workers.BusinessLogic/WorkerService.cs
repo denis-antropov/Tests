@@ -81,7 +81,7 @@
             if (isNew)
             {
                 entity = new WorkerEntity();
-                MapToWorkerEntity(worker, new WorkerEntity());
+                MapToWorkerEntity(worker, entity);
                 Workers.Add(worker, entity);
                 _repository.Add(entity);
 

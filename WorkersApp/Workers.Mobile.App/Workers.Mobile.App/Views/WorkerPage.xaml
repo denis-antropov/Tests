@@ -40,7 +40,9 @@
     </ContentPage.Content>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Name="Save" Order="Primary" Priority="0" Command="{Binding SaveCommand}" />
-        <ToolbarItem Name="Cancel" Order="Primary" Priority="1" Command="{Binding CancelCommand}" />
+        <ToolbarItem Name="Save" Order="Primary" Priority="0" Command="{Binding SaveCommand}" 
+                     Clicked="SaveButton_Click"/>
+        <ToolbarItem Name="Cancel" Order="Primary" Priority="1" Command="{Binding CancelCommand}"
+                     Clicked="CancelButton_Click"/>
     </ContentPage.ToolbarItems>
 </ContentPage>

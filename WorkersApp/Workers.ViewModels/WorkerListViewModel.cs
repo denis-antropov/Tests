@@ -112,12 +112,9 @@
         private void CreateWorker()
         {
             var newWorker = _workersService.CreateNew();
-            if(_workerModifier.Modify(newWorker))
-            {
-                var newWorkerItem = new WorkerItem(newWorker);
-                Workers.Add(newWorkerItem);
-                SelectedWorker = newWorkerItem;
-            }
+            _workerModifier.ModificationFinished += CreatingFinished;
+
+            _workerModifier.Modify(newWorker);
         }
 
         /// <summary>
@@ -125,10 +122,9 @@
         /// </summary>
         private void EditWorker()
         {
-            if (_workerModifier.Modify(SelectedWorker.Worker))
-            {
-                SelectedWorker.Refresh();
-            }
+            _workerModifier.ModificationFinished += EditingFinished;
+
+            _workerModifier.Modify(SelectedWorker.Worker);
         }
 
         /// <summary>
@@ -141,6 +137,26 @@
 
             DeleteWorkerCommand.RaiseCanExecuteChanged();
             EditWorkerCommand.RaiseCanExecuteChanged();
+        }
+
+        private void EditingFinished(object sender, ModificationStateEventArgs e)
+        {
+            _workerModifier.ModificationFinished -= EditingFinished;
+
+            if (e.State)
+                SelectedWorker.Refresh();
+        }
+
+        private void CreatingFinished(object sender, ModificationStateEventArgs e)
+        {
+            _workerModifier.ModificationFinished -= CreatingFinished;
+
+            if (e.State)
+            {
+                var newWorkerItem = new WorkerItem(e.Worker);
+                Workers.Add(newWorkerItem);
+                SelectedWorker = newWorkerItem;
+            }
         }
     }
 }

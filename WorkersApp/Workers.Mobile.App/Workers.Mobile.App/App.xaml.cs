@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Workers.BusinessLogic;
 using Workers.DataLayer;
 using Workers.ViewModels;
@@ -22,7 +23,7 @@ namespace Workers.Mobile.App
         public App()
         {
             WorkersPage page = new WorkersPage();
-            page.BindingContext = GetWorkerList();
+            page.BindingContext = GetWorkerList(page);
 
             MainPage = new NavigationPage(page);
         }
@@ -31,12 +32,12 @@ namespace Workers.Mobile.App
         /// Returns WorkerListViewModel instance
         /// </summary>
         /// <returns>WorkerListViewModel instance</returns>
-        public WorkerListViewModel GetWorkerList()
+        public WorkerListViewModel GetWorkerList(Page mainPage)
         {
             var databasePath = DependencyService.Get<IDbFilePathProvider>().GetFilePath();
             _repository = new WorkersRepository(databasePath);
             var workersService = new WorkerService(_repository);
-            var workerModifier = new WorkerModifier();
+            var workerModifier = new WorkerModifier(mainPage);
             var workerList = new WorkerListViewModel(workersService, workerModifier);
 
             return workerList;
@@ -63,19 +64,40 @@ namespace Workers.Mobile.App
         /// </summary>
         private class WorkerModifier : IWorkerModifier
         {
+            private readonly Page _mainPage;
+            private IWorker _worker;
+
+            public WorkerModifier(Page mainPage)
+            {
+                _mainPage = mainPage;
+            }
+
+            public event EventHandler<ModificationStateEventArgs> ModificationFinished;
+
             /// <summary>
             /// Modifies worker instance
             /// </summary>
             /// <param name="worker">Worker instance</param>
             /// <returns>True, if worker is modified and saved; otherwise - false</returns>
-            public bool Modify(IWorker worker)
+            public void Modify(IWorker worker)
             {
-                //WorkerPage workerWindow = new WorkerPage();
-                //workerWindow.BindingContext = new WorkerViewModel(worker);
+                _worker = worker;
+                WorkerPage workerWindow = new WorkerPage();
+                workerWindow.BindingContext = new WorkerViewModel(worker);
+                workerWindow.Disappearing += WorkerPageDisappearing;
 
-                //Application.Current.MainPage.Navigation.PushAsync(workerWindow);
+                var task = _mainPage.Navigation.PushAsync(workerWindow).GetAwaiter();
+            }
+ 
+            private void WorkerPageDisappearing(object sender, EventArgs e)
+            {
+                var workerPage = (WorkerPage)sender;
+                workerPage.Disappearing -= WorkerPageDisappearing;
 
-                return false;
+                ModificationFinished?.Invoke(
+                    this, 
+                    new ModificationStateEventArgs(workerPage.DialogResult, _worker));
+
             }
         }
     }

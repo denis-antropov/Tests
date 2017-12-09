@@ -47,19 +47,23 @@
         /// </summary>
         private class WorkerModifier : IWorkerModifier
         {
+            public event EventHandler<ModificationStateEventArgs> ModificationFinished;
+
             /// <summary>
             /// Modifies worker instance
             /// </summary>
             /// <param name="worker">Worker instance</param>
             /// <returns>True, if worker is modified and saved; otherwise - false</returns>
-            public bool Modify(IWorker worker)
+            public void Modify(IWorker worker)
             {
                 WorkerWindow workerWindow = new WorkerWindow();
                 workerWindow.DataContext = new WorkerViewModel(worker);
 
                 var dialogResult = workerWindow.ShowDialog();
 
-                return dialogResult.HasValue && dialogResult.Value;
+                ModificationFinished?.Invoke(
+                    this, 
+                    new ModificationStateEventArgs(dialogResult.HasValue && dialogResult.Value, worker));
             }
         }
     }
