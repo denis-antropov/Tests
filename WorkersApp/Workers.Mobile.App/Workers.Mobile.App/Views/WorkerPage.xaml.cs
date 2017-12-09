@@ -36,7 +36,7 @@ namespace Workers.Views
         private async void CancelButton_Click(object sender, EventArgs e)
         {
             DialogResult = false;
-
+            
             await Navigation.PopAsync();
         }
     }

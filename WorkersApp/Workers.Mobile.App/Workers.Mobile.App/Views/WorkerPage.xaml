@@ -1,7 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:Workers.Views"
              x:Class="Workers.Views.WorkerPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <views:SexConverter x:Key="SexConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -24,16 +30,14 @@
             <Entry Grid.Column="1" Grid.Row="1" Text="{Binding Surname}" />
 
             <Label Grid.Column="0" Grid.Row="2" Text="Birthday" />
-            <!--<DatePicker Grid.Column="1" Grid.Row="2" SelectedDate="{Binding Birthday}" />-->
+            <DatePicker Grid.Column="1" Grid.Row="2" Date="{Binding Birthday}" />
 
             <Label Grid.Column="0" Grid.Row="3" Text="Sex" />
-            <!--<CheckBox Grid.Column="1" Grid.Row="3" 
-                      IsChecked="{Binding Sex, Converter={StaticResource SexConverter}}" >
-                <Label Text="{Binding Sex}" Margin="0" />
-            </CheckBox>-->
+            <Switch Grid.Column="1" Grid.Row="3"
+                      IsToggled="{Binding Sex, Converter={StaticResource SexConverter}}" />
 
             <Label Grid.Column="0" Grid.Row="4" Text="Has children" />
-            <!--<CheckBox Grid.Column="1" Grid.Row="4" IsChecked="{Binding HasChildren}" />-->
+            <Switch Grid.Column="1" Grid.Row="4" IsToggled="{Binding HasChildren}" />
         </Grid>
 
        
