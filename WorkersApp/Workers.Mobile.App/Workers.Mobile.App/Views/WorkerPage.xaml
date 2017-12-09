@@ -9,38 +9,37 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-
-            <Label Grid.Column="0" Grid.Row="0" Text="Name" />
-            <Entry Grid.Column="1" Grid.Row="0" Text="{Binding Name}" />
-
-            <Label Grid.Column="0" Grid.Row="1" Text="Surame" />
-            <Entry Grid.Column="1" Grid.Row="1" Text="{Binding Surname}" />
-
-            <Label Grid.Column="0" Grid.Row="2" Text="Birthday" />
-            <DatePicker Grid.Column="1" Grid.Row="2" Date="{Binding Birthday}" />
-
-            <Label Grid.Column="0" Grid.Row="3" Text="Sex" />
-            <Switch Grid.Column="1" Grid.Row="3"
-                      IsToggled="{Binding Sex, Converter={StaticResource SexConverter}}" />
-
-            <Label Grid.Column="0" Grid.Row="4" Text="Has children" />
-            <Switch Grid.Column="1" Grid.Row="4" IsToggled="{Binding HasChildren}" />
-        </Grid>
-
-       
+        <TableView Intent="Settings">
+            <TableRoot>
+                <TableSection Title="Worker">
+                    <EntryCell Label="Name" Text="{Binding Name}"/>
+                    <EntryCell Label="Surname" Text="{Binding Surname}"/>
+                    <ViewCell>
+                        <ViewCell.View>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Text="Birthday"
+                                       VerticalTextAlignment="Center">
+                                    <Label.Margin>
+                                        <OnPlatform x:TypeArguments="Thickness"
+                                            iOS="0,0,0,0"
+                                            WinPhone="0,0,0,0"
+                                            Android="15,0,0,0" />
+                                    </Label.Margin>
+                                </Label>
+                                <DatePicker Grid.Column="1" Date="{Binding Birthday}"
+                                            Margin="0,0,10,0"/>
+                            </Grid>
+                        </ViewCell.View>
+                    </ViewCell>
+                    <SwitchCell Text="Sex" On="{Binding Sex, Converter={StaticResource SexConverter}}" />
+                    <SwitchCell Text="Has children" On="{Binding HasChildren}" />
+                </TableSection>
+            </TableRoot>
+        </TableView>
     </ContentPage.Content>
 
     <ContentPage.ToolbarItems>
