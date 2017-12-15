@@ -35,8 +35,10 @@
                             </Grid>
                         </ViewCell.View>
                     </ViewCell>
-                    <SwitchCell Text="Sex" On="{Binding Sex, Converter={StaticResource SexConverter}}" />
-                    <SwitchCell Text="Has children" On="{Binding HasChildren}" />
+                    <SwitchCell Text="{Binding Sex, StringFormat='Sex ({0})'}" 
+                                On="{Binding Sex, Converter={StaticResource SexConverter}}" />
+                    <SwitchCell Text="{Binding HasChildren, StringFormat='Has children ({0})'}" 
+                                On="{Binding HasChildren}" />
                 </TableSection>
             </TableRoot>
         </TableView>

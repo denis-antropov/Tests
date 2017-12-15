@@ -5,6 +5,7 @@
     using Workers.BusinessLogic;
     using Workers.DataLayer;
     using Workers.ViewModels;
+    using Workers.ViewModels.Interfaces;
     using Workers.Views;
 
     /// <summary>
@@ -26,7 +27,7 @@
             _repository = new WorkersRepository(Path.Combine(Environment.CurrentDirectory, "workers.db"));
             var workersService = new WorkerService(_repository);
             var workerModifier = new WorkerModifier();
-            var workerList = new WorkerListViewModel(workersService, workerModifier);
+            var workerList = new WorkerListViewModel(workersService, workerModifier, new WorkerItemFactory());
 
             return workerList;
         }

@@ -2,11 +2,12 @@
 {
     using System;
     using Workers.BusinessLogic;
+    using Workers.ViewModels.Interfaces;
 
     /// <summary>
     /// Represents simple view model of worker
     /// </summary>
-    public class WorkerItem : ViewModelBase
+    public class WorkerItem : ViewModelBase, IWorkerItem
     {
         /// <summary>
         /// Initializes a new instance of the WorkerItem class
@@ -23,7 +24,7 @@
         /// <summary>
         /// Gets the worker instance
         /// </summary>
-        internal IWorker Worker { get; private set; }
+        public IWorker Worker { get; private set; }
 
         /// <summary>
         /// Gets the Id of worker

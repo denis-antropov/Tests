@@ -1,4 +1,4 @@
-﻿namespace Workers.ViewModels
+﻿namespace Workers.ViewModels.Interfaces
 {
     using System;
     using Workers.BusinessLogic;

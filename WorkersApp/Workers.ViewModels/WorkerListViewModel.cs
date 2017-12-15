@@ -5,6 +5,7 @@
     using System.Runtime.CompilerServices;
     using Workers.BusinessLogic;
     using Workers.ViewModels.Common;
+    using Workers.ViewModels.Interfaces;
 
     /// <summary>
     /// Represents a view model of workerslist
@@ -20,27 +21,30 @@
         /// Worker modifier
         /// </summary>
         private readonly IWorkerModifier _workerModifier;
+        private readonly IWorkerItemFactory _workerItemFactory;
 
         /// <summary>
         /// List of workers
         /// </summary>
-        private ObservableCollection<WorkerItem> _workers;
+        private ObservableCollection<IWorkerItem> _workers;
 
         /// <summary>
         /// The seletected worker item
         /// </summary>
-        private WorkerItem _selcectedWorker;
+        private IWorkerItem _selcectedWorker;
 
         /// <summary>
-        /// Initializes a new instance of the WorkerItem class
+        /// Initializes a new instance of the IWorkerItem class
         /// </summary>
         /// <param name="workersService">Worker service</param>
         /// <param name="workerModifier">Worker modifier</param>
         /// <exception cref="ArgumentNullException">workersService or workerModifier is null</exception>
-        public WorkerListViewModel(IWorkersService workersService, IWorkerModifier workerModifier)
+        public WorkerListViewModel(IWorkersService workersService, IWorkerModifier workerModifier, 
+            IWorkerItemFactory workerItemFactory)
         {
             _workersService = workersService ?? throw new ArgumentNullException(nameof(workersService));
             _workerModifier = workerModifier ?? throw new ArgumentNullException(nameof(workerModifier));
+            _workerItemFactory = workerItemFactory ?? throw new ArgumentNullException(nameof(workerItemFactory));
 
             DeleteWorkerCommand = new RelayCommand(() => DeleteWorker(), () => SelectedWorker != null);
             EditWorkerCommand = new RelayCommand(() => EditWorker(), () => SelectedWorker != null);
@@ -51,16 +55,16 @@
         /// <summary>
         /// Gets the list of workers
         /// </summary>
-        public ObservableCollection<WorkerItem> Workers
+        public ObservableCollection<IWorkerItem> Workers
         {
             get
             {
                 if (_workers == null)
                 {
-                    _workers = new ObservableCollection<WorkerItem>();
+                    _workers = new ObservableCollection<IWorkerItem>();
                     foreach (var w in _workersService.GetWorkers())
                     {
-                        _workers.Add(new WorkerItem(w));
+                        _workers.Add(_workerItemFactory.Create(w));
                     }
                 }
 
@@ -71,7 +75,7 @@
         /// <summary>
         /// Gets or sets the seletected worker item
         /// </summary>
-        public WorkerItem SelectedWorker
+        public IWorkerItem SelectedWorker
         {
             get { return _selcectedWorker; }
             set
@@ -153,9 +157,9 @@
 
             if (e.State)
             {
-                var newWorkerItem = new WorkerItem(e.Worker);
-                Workers.Add(newWorkerItem);
-                SelectedWorker = newWorkerItem;
+                var newIWorkerItem = _workerItemFactory.Create(e.Worker);
+                Workers.Add(newIWorkerItem);
+                SelectedWorker = newIWorkerItem;
             }
         }
     }

@@ -6,15 +6,20 @@
     <StackLayout>
         <Label>List of workers:</Label>
 
-        <ListView ItemsSource="{Binding Workers}"
+        <ListView x:Name="List" ItemsSource="{Binding Workers}"
               SelectedItem="{Binding SelectedWorker, Mode=TwoWay}"
-              CachingStrategy="RecycleElement">
+              CachingStrategy="RecycleElement" 
+              ItemTapped="ListView_ItemTapped">
 
-            <!--Тут можно использовать и ViewCell, но хорошо бы использовать Multibinding
-            Для формирования строки-->
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Name}" Detail="{Binding Sex}"/>
+                    <TextCell Text="{Binding FullName}" Detail="{Binding Sex}">
+                        <TextCell.ContextActions>
+                            <MenuItem Text="Delete" 
+                                      Command="{Binding BindingContext.DeleteWorkerCommand, Source={x:Reference List}}" 
+                                      CommandParameter="{Binding .}"/>
+                        </TextCell.ContextActions>
+                    </TextCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
 
@@ -23,7 +28,5 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Name="New" Order="Primary" Priority="0" Command="{Binding CreateWorkerCommand}" />
-        <ToolbarItem Name="Edit" Order="Primary" Priority="1" Command="{Binding EditWorkerCommand}" />
-        <ToolbarItem Name="Remove" Order="Primary" Priority="2" Command="{Binding DeleteWorkerCommand}" />
     </ContentPage.ToolbarItems>
 </ContentPage>

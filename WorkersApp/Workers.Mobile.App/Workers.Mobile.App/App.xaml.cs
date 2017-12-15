@@ -6,6 +6,7 @@ using System.Threading;
 using Workers.BusinessLogic;
 using Workers.DataLayer;
 using Workers.ViewModels;
+using Workers.ViewModels.Interfaces;
 using Workers.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -38,7 +39,7 @@ namespace Workers.Mobile.App
             _repository = new WorkersRepository(databasePath);
             var workersService = new WorkerService(_repository);
             var workerModifier = new WorkerModifier(mainPage);
-            var workerList = new WorkerListViewModel(workersService, workerModifier);
+            var workerList = new WorkerListViewModel(workersService, workerModifier, new DetailedWorkerItemFactory());
 
             return workerList;
         }
