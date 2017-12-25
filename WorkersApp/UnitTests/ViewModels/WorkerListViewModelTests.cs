@@ -8,6 +8,7 @@
     using System.Linq;
     using Workers.BusinessLogic;
     using Workers.ViewModels.Interfaces;
+    using z3r0.Utils;
 
     [TestFixture]
     public class WorkerListViewModelTests
@@ -24,7 +25,8 @@
 
             _workerModifier = new Mock<IWorkerModifier>();
 
-            _workerList = new WorkerListViewModel(_workerService.Object, _workerModifier.Object, new WorkerItemFactory());
+            _workerList = new WorkerListViewModel(
+                _workerService.Object, _workerModifier.Object, new WorkerItemFactory(), new Mock<IUserInteraction>().Object);
         }
 
         private IEnumerable<IWorker> GetMockWorkers()
@@ -50,13 +52,15 @@
         public void ThrowsOnNullWorkerService()
         {
             IWorkersService service = null;
-            Assert.Catch<ArgumentNullException>(() => new WorkerListViewModel(service, _workerModifier.Object, new WorkerItemFactory()));
+            Assert.Catch<ArgumentNullException>(() => new WorkerListViewModel
+            (service, _workerModifier.Object, new WorkerItemFactory(), new Mock<IUserInteraction>().Object));
         }
 
         [Test]
         public void ThrowsOnNullWorkerModifier()
         {
-            Assert.Catch<ArgumentNullException>(() => new WorkerListViewModel(_workerService.Object, null, new WorkerItemFactory()));
+            Assert.Catch<ArgumentNullException>(() => new WorkerListViewModel(
+                _workerService.Object, null, new WorkerItemFactory(), new Mock<IUserInteraction>().Object));
         }
 
         [Test]

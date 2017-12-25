@@ -80,6 +80,15 @@ namespace Workers.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want delete &apos;{0}&apos; worker?.
+        /// </summary>
+        internal static string strQuestionToDeleteWorker {
+            get {
+                return ResourceManager.GetString("strQuestionToDeleteWorker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Surname cannot be empty.
         /// </summary>
         internal static string strSurnameIsEmpty {

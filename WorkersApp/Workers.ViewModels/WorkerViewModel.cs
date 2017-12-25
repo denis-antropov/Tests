@@ -3,10 +3,10 @@
     using System;
     using System.Collections;
     using System.ComponentModel;
-    using Common;
     using System.Linq;
     using Workers.BusinessLogic;
     using System.Runtime.CompilerServices;
+    using z3r0.Utils.ViewModels.Commands;
 
     /// <summary>
     /// Represents view model of worker

@@ -123,6 +123,9 @@
   <data name="strNameIsEmpty" xml:space="preserve">
     <value>Name cannot be empty</value>
   </data>
+  <data name="strQuestionToDeleteWorker" xml:space="preserve">
+    <value>Do you want delete '{0}' worker?</value>
+  </data>
   <data name="strSurnameIsEmpty" xml:space="preserve">
     <value>Surname cannot be empty</value>
   </data>

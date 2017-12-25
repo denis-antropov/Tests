@@ -23,4 +23,14 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="External\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="z3r0.Utils">
+      <HintPath>External\z3r0.Utils.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

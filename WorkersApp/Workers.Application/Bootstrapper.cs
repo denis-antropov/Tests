@@ -7,6 +7,7 @@
     using Workers.ViewModels;
     using Workers.ViewModels.Interfaces;
     using Workers.Views;
+    using z3r0.MvvmUtils.Views.Xaml;
 
     /// <summary>
     /// Represents a bootstrapper of application
@@ -24,10 +25,10 @@
         /// <returns>WorkerListViewModel instance</returns>
         public static WorkerListViewModel GetWorkerList()
         {
-            _repository = new WorkersRepository(Path.Combine(Environment.CurrentDirectory, "workers.db"));
+               _repository = new WorkersRepository(Path.Combine(Environment.CurrentDirectory, "workers.db"));
             var workersService = new WorkerService(_repository);
             var workerModifier = new WorkerModifier();
-            var workerList = new WorkerListViewModel(workersService, workerModifier, new WorkerItemFactory());
+            var workerList = new WorkerListViewModel(workersService, workerModifier, new WorkerItemFactory(), new MessageBoxUserInteraction("Workers"));
 
             return workerList;
         }

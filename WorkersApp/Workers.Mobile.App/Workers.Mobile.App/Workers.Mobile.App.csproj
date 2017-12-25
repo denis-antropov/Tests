@@ -7,27 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="App.xaml" />
-	<None Remove="Views\WorkerPage.xaml" />
-	<None Remove="Views\WorkersPage.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="App.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-	<EmbeddedResource Include="Views\WorkerPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-	    <EmbeddedResource Include="Views\WorkersPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="1.1.2" />
     <PackageReference Include="Microsoft.NETCore.Portable.Compatibility" Version="1.0.1" />
-    <PackageReference Include="Xamarin.Forms" Version="2.3.4.247" />
+    <PackageReference Include="Xamarin.Forms" Version="2.4.0.91020" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,15 +20,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="App.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\WorkerPage.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\WorkersPage.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Folder Include="External\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="z3r0.MvvmUtils.Xamarin">
+      <HintPath>External\z3r0.MvvmUtils.Xamarin.dll</HintPath>
+    </Reference>
+    <Reference Include="z3r0.Utils">
+      <HintPath>..\..\Workers.ViewModels\External\z3r0.Utils.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 
 </Project>

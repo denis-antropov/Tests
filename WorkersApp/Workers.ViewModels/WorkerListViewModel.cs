@@ -3,9 +3,13 @@
     using System;
     using System.Collections.ObjectModel;
     using System.Runtime.CompilerServices;
+    using System.Threading.Tasks;
     using Workers.BusinessLogic;
-    using Workers.ViewModels.Common;
     using Workers.ViewModels.Interfaces;
+    using z3r0.Utils;
+    using z3r0.Utils.Extensions;
+    using z3r0.Utils.ViewModels.Commands;
+    using z3r0.Utils.ViewModels.Commands.Async;
 
     /// <summary>
     /// Represents a view model of workerslist
@@ -22,6 +26,7 @@
         /// </summary>
         private readonly IWorkerModifier _workerModifier;
         private readonly IWorkerItemFactory _workerItemFactory;
+        private readonly IUserInteraction _userInteraction;
 
         /// <summary>
         /// List of workers
@@ -40,13 +45,14 @@
         /// <param name="workerModifier">Worker modifier</param>
         /// <exception cref="ArgumentNullException">workersService or workerModifier is null</exception>
         public WorkerListViewModel(IWorkersService workersService, IWorkerModifier workerModifier, 
-            IWorkerItemFactory workerItemFactory)
+            IWorkerItemFactory workerItemFactory, IUserInteraction userInteraction)
         {
             _workersService = workersService ?? throw new ArgumentNullException(nameof(workersService));
             _workerModifier = workerModifier ?? throw new ArgumentNullException(nameof(workerModifier));
             _workerItemFactory = workerItemFactory ?? throw new ArgumentNullException(nameof(workerItemFactory));
+            _userInteraction = userInteraction ?? throw new ArgumentNullException(nameof(userInteraction));
 
-            DeleteWorkerCommand = new RelayCommand(() => DeleteWorker(), () => SelectedWorker != null);
+            DeleteWorkerCommand = new AsyncRelayCommand(() => DeleteWorker(), () => SelectedWorker != null);
             EditWorkerCommand = new RelayCommand(() => EditWorker(), () => SelectedWorker != null);
             CreateWorkerCommand = new RelayCommand(() => CreateWorker());
             Workers.GetType();
@@ -88,26 +94,33 @@
         /// <summary>
         /// Gets the delete worker command
         /// </summary>
-        public RelayCommand DeleteWorkerCommand { get; private set; }
+        public RaisableCommand DeleteWorkerCommand { get; private set; }
 
         /// <summary>
         /// Gets the create worker command
         /// </summary>
-        public RelayCommand CreateWorkerCommand { get; private set; }
+        public RaisableCommand CreateWorkerCommand { get; private set; }
 
         /// <summary>
         /// Gets the edit worker command
         /// </summary>
-        public RelayCommand EditWorkerCommand { get; private set; }
+        public RaisableCommand EditWorkerCommand { get; private set; }
 
         /// <summary>
         /// Deletes the selected worker
         /// </summary>
-        private void DeleteWorker()
+        private async Task DeleteWorker()
         {
-            SelectedWorker.Worker.Delete();
-            Workers.Remove(SelectedWorker);
-            SelectedWorker = null;
+            var result = await _userInteraction.NotifyQuestionAsync(
+                "Question",
+                Localization.strQuestionToDeleteWorker.AsFormat(SelectedWorker.Worker.Name), 
+                UserOptions.YesNo);
+            if (result == UserAnswer.Yes)
+            {
+                SelectedWorker.Worker.Delete();
+                Workers.Remove(SelectedWorker);
+                SelectedWorker = null;
+            }
         }
 
         /// <summary>
