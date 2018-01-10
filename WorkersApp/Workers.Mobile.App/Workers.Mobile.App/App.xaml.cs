@@ -35,7 +35,7 @@
             var workersService = new WorkerService(_repository);
             var workerModifier = new WorkerModifier(mainPage);
             var workerList = new WorkerListViewModel(
-                workersService, workerModifier, new DetailedWorkerItemFactory(), mainPage);
+                workersService, workerModifier, new DetailedWorkerItemFactory(), new UserInteractionBasedOnPage(mainPage));
 
             return workerList;
         }

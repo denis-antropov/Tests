@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
+using Workers.Application;
 
-namespace Workers.Application
+namespace Workers
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : System.Windows.Application
+    class Program
     {
         static App _app;
 
@@ -32,6 +34,7 @@ namespace Workers.Application
                new DispatcherSynchronizationContext());
 
             var program = new Program();
+            program.ExitRequested += program_ExitRequested;
             var programTask = program.StartAsync();
 
             HandleException(programTask);
@@ -55,6 +58,40 @@ namespace Workers.Application
         static void program_ExitRequested(object sender, EventArgs e)
         {
             _app.Shutdown();
+        }
+
+        public event EventHandler ExitRequested;
+
+        public async Task StartAsync()
+        {
+            SplashScreen screen = new SplashScreen("SplashScreen.png");
+
+            screen.Show(false);
+
+            await Task.Delay(TimeSpan.FromSeconds(3));
+
+            var viewModel = Bootstrapper.GetWorkerList();
+            // viewModel.CloseRequested += viewModel_CloseRequested;
+            // await viewModel.InitializeAsync();
+
+            var mainWindow = new MainWindow();
+            mainWindow.DataContext = viewModel;
+            mainWindow.Closed += (s, e) =>
+            {
+                // viewModel.RequestClose();
+                // Instead of Shutdown we can use RequestClose
+                ExitRequested?.Invoke(this, EventArgs.Empty);
+            };
+
+
+            mainWindow.Show();
+            screen.Close(TimeSpan.FromMilliseconds(0));
+        }
+
+        private void viewModel_CloseRequested(object sender, EventArgs e)
+        {
+            Bootstrapper.Dispsose();
+            
         }
     }
 }

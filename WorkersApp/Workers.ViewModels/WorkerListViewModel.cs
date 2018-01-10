@@ -86,8 +86,11 @@
             get { return _selcectedWorker; }
             set
             {
-                _selcectedWorker = value;
-                OnPropertyChanged();
+                if (_selcectedWorker != value)
+                {
+                    _selcectedWorker = value;
+                    OnPropertyChanged();
+                }
             }
         }
         
@@ -112,14 +115,15 @@
         private async Task DeleteWorker()
         {
             var result = await _userInteraction.NotifyQuestionAsync(
-                "Question",
                 Localization.strQuestionToDeleteWorker.AsFormat(SelectedWorker.Worker.Name), 
                 UserOptions.YesNo);
             if (result == UserAnswer.Yes)
             {
-                SelectedWorker.Worker.Delete();
-                Workers.Remove(SelectedWorker);
+                var workerToDelete = _selcectedWorker;
                 SelectedWorker = null;
+
+                workerToDelete.Worker.Delete();
+                Workers.Remove(workerToDelete);
             }
         }
 

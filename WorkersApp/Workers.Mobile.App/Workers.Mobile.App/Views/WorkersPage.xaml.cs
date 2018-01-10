@@ -8,12 +8,34 @@ using z3r0.Utils;
 namespace Workers.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class WorkersPage : ContentPage, IUserInteraction
+    public partial class WorkersPage : ContentPage
     {
         public WorkersPage()
         {
             InitializeComponent();
         }
+
+        private async void Button_Click(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new WorkerPage());
+        }
+
+        private void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            var context = (WorkerListViewModel)((BindableObject)sender).BindingContext;
+            context.EditWorkerCommand.Execute(null);
+        }
+    }
+
+    public class UserInteractionBasedOnPage : IUserInteraction
+    {
+        private readonly Page _sourcePage;
+
+        public UserInteractionBasedOnPage(Page sourcePage)
+        {
+            _sourcePage = sourcePage;
+        }
+
 
         public void NotifyError(string caption, string text)
         {
@@ -62,22 +84,29 @@ namespace Workers.Views
 
         public async Task<UserAnswer> NotifyQuestionAsync(string caption, string text, UserOptions options)
         {
-            try
+            UserAnswer answer = UserAnswer.Cancel;
+            bool result;
+
+            switch (options)
             {
-                var result = await DisplayAlert(caption, text, "Yes", "No");
-                return result ? UserAnswer.Yes : UserAnswer.No;
-            }
-            catch (Exception)
-            {
-                
+                case UserOptions.OkCancel:
+                    result = await _sourcePage.DisplayAlert(caption, text, "Ok", "Cancel");
+                    answer = result ? UserAnswer.Ok : UserAnswer.Cancel;
+                    break;
+                case UserOptions.YesNo:
+                    result = await _sourcePage.DisplayAlert(caption, text, "Yes", "No");
+                    answer = result ? UserAnswer.Yes : UserAnswer.No;
+                    break;
+                case UserOptions.YesNoCancel:
+                    throw new NotSupportedException();
             }
 
-            return UserAnswer.No;
+            return answer;
         }
 
         public async Task<UserAnswer> NotifyQuestionAsync(string text, UserOptions options)
         {
-            return await NotifyQuestionAsync(string.Empty, text, options);
+            return await NotifyQuestionAsync("Question", text, options);
         }
 
         public void NotifyWarning(string caption, string text)
@@ -88,17 +117,6 @@ namespace Workers.Views
         public void NotifyWarning(string text)
         {
             throw new NotImplementedException();
-        }
-
-        private async void Button_Click(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new WorkerPage());
-        }
-
-        private void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
-        {
-            var context = (WorkerListViewModel)((BindableObject)sender).BindingContext;
-            context.EditWorkerCommand.Execute(null);
         }
     }
 }
