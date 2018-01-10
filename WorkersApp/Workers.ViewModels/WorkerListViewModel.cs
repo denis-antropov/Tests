@@ -97,7 +97,7 @@
         /// <summary>
         /// Gets the delete worker command
         /// </summary>
-        public RaisableCommand DeleteWorkerCommand { get; private set; }
+        public AsyncRelayCommand DeleteWorkerCommand { get; private set; }
 
         /// <summary>
         /// Gets the create worker command

@@ -9,6 +9,7 @@
     using Workers.BusinessLogic;
     using Workers.ViewModels.Interfaces;
     using z3r0.Utils;
+    using System.Threading.Tasks;
 
     [TestFixture]
     public class WorkerListViewModelTests
@@ -16,6 +17,7 @@
         private WorkerListViewModel _workerList;
         private Mock<IWorkersService> _workerService;
         private Mock<IWorkerModifier> _workerModifier;
+        private Mock<IUserInteraction> _userInteraction;
 
         [SetUp]
         public void Initializtion()
@@ -24,9 +26,15 @@
             _workerService.Setup(r => r.GetWorkers()).Returns(GetMockWorkers);
 
             _workerModifier = new Mock<IWorkerModifier>();
+            _userInteraction = new Mock<IUserInteraction>();
+
+            _userInteraction.Setup(
+                ui => ui.NotifyQuestionAsync(It.IsAny<string>(), It.IsAny<UserOptions>()))
+                .Returns(() => Task.Run(() => UserAnswer.Yes));
 
             _workerList = new WorkerListViewModel(
-                _workerService.Object, _workerModifier.Object, new WorkerItemFactory(), new Mock<IUserInteraction>().Object);
+                _workerService.Object, _workerModifier.Object, 
+                new WorkerItemFactory(), _userInteraction.Object);
         }
 
         private IEnumerable<IWorker> GetMockWorkers()
@@ -90,7 +98,7 @@
         }
 
         [Test]
-        public void DeletesSelectedWorker()
+        public async Task DeletesSelectedWorker()
         {
             var workerToDelete = new Mock<IWorker>();
             var deleteCalled = false;
@@ -99,11 +107,12 @@
             _workerList.Workers.Add(workerItemToDelete);
 
             _workerList.SelectedWorker = workerItemToDelete;
-            _workerList.DeleteWorkerCommand.Execute(null);
+            var task = _workerList.DeleteWorkerCommand.ExecuteAsync(null);
+            await task;
 
             CollectionAssert.DoesNotContain(_workerList.Workers, workerToDelete);
             Assert.IsTrue(deleteCalled);
-            Assert.IsNull(_workerList.SelectedWorker);
+            Assert.That(_workerList.SelectedWorker, Is.Null);
         }
 
         [Test]
