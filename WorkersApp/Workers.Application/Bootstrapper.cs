@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Threading.Tasks;
     using Workers.BusinessLogic;
     using Workers.DataLayer;
     using Workers.ViewModels;
@@ -23,9 +24,12 @@
         /// Returns WorkerListViewModel instance
         /// </summary>
         /// <returns>WorkerListViewModel instance</returns>
-        public static WorkerListViewModel GetWorkerList()
+        public async static Task<WorkerListViewModel> GetWorkerListAsync()
         {
-               _repository = new WorkersRepository(Path.Combine(Environment.CurrentDirectory, "workers.db"));
+            // Simulate some delay
+            await Task.Delay(TimeSpan.FromSeconds(1));
+
+            _repository = new WorkersRepository(Path.Combine(Environment.CurrentDirectory, "workers.db"));
             var workersService = new WorkerService(_repository);
             var workerModifier = new WorkerModifier();
             var workerList = new WorkerListViewModel(workersService, workerModifier, new WorkerItemFactory(), new MessageBoxUserInteraction("Workers"));

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -68,9 +65,7 @@ namespace Workers
 
             screen.Show(false);
 
-            await Task.Delay(TimeSpan.FromSeconds(3));
-
-            var viewModel = Bootstrapper.GetWorkerList();
+            var viewModel = await Bootstrapper.GetWorkerListAsync();
             // viewModel.CloseRequested += viewModel_CloseRequested;
             // await viewModel.InitializeAsync();
 
@@ -91,7 +86,6 @@ namespace Workers
         private void viewModel_CloseRequested(object sender, EventArgs e)
         {
             Bootstrapper.Dispsose();
-            
         }
     }
 }
