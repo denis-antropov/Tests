@@ -2,8 +2,9 @@
 {
     using System;
     using System.Collections.ObjectModel;
-    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
+    using System.Windows.Input;
+    using Prism.Mvvm;
     using Workers.BusinessLogic;
     using Workers.ViewModels.Interfaces;
     using z3r0.Utils;
@@ -14,7 +15,7 @@
     /// <summary>
     /// Represents a view model of workerslist
     /// </summary>
-    public class WorkerListViewModel : ViewModelBase
+    public class WorkerListViewModel : BindableBase
     {
         /// <summary>
         /// Worker service
@@ -52,10 +53,11 @@
             _workerItemFactory = workerItemFactory ?? throw new ArgumentNullException(nameof(workerItemFactory));
             _userInteraction = userInteraction ?? throw new ArgumentNullException(nameof(userInteraction));
 
-            DeleteWorkerCommand = new AsyncRelayCommand(() => DeleteWorker(), () => SelectedWorker != null);
-            EditWorkerCommand = new RelayCommand(() => EditWorker(), () => SelectedWorker != null);
-            CreateWorkerCommand = new RelayCommand(() => CreateWorker());
-            Workers.GetType();
+            DeleteWorkerCommand = new AsyncRelayCommand(DeleteWorker, () => SelectedWorker != null)
+                .ObservesProperty(() => SelectedWorker);
+            EditWorkerCommand = new RelayCommand(EditWorker, () => SelectedWorker != null)
+                .ObservesProperty(() => SelectedWorker);
+            CreateWorkerCommand = new RelayCommand(CreateWorker);
         }
 
         /// <summary>
@@ -83,31 +85,24 @@
         /// </summary>
         public IWorkerItem SelectedWorker
         {
-            get { return _selcectedWorker; }
-            set
-            {
-                if (_selcectedWorker != value)
-                {
-                    _selcectedWorker = value;
-                    OnPropertyChanged();
-                }
-            }
+            get => _selcectedWorker;
+            set => SetProperty(ref _selcectedWorker, value);
         }
         
         /// <summary>
         /// Gets the delete worker command
         /// </summary>
-        public AsyncRelayCommand DeleteWorkerCommand { get; private set; }
+        public AsyncRelayCommand DeleteWorkerCommand { get; }
 
         /// <summary>
         /// Gets the create worker command
         /// </summary>
-        public RaisableCommand CreateWorkerCommand { get; private set; }
+        public ICommand CreateWorkerCommand { get; }
 
         /// <summary>
         /// Gets the edit worker command
         /// </summary>
-        public RaisableCommand EditWorkerCommand { get; private set; }
+        public ICommand EditWorkerCommand { get; }
 
         /// <summary>
         /// Deletes the selected worker
@@ -146,18 +141,6 @@
             _workerModifier.ModificationFinished += EditingFinished;
 
             _workerModifier.Modify(SelectedWorker.Worker);
-        }
-
-        /// <summary>
-        /// Notifies about changed property
-        /// </summary>
-        /// <param name="propertyName">Name of changed property</param>
-        protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            base.OnPropertyChanged(propertyName);
-
-            DeleteWorkerCommand.RaiseCanExecuteChanged();
-            EditWorkerCommand.RaiseCanExecuteChanged();
         }
 
         private void EditingFinished(object sender, ModificationStateEventArgs e)

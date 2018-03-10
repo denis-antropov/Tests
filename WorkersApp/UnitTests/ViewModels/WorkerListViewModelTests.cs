@@ -10,6 +10,7 @@
     using Workers.ViewModels.Interfaces;
     using z3r0.Utils;
     using System.Threading.Tasks;
+    using System.Windows.Input;
 
     [TestFixture]
     public class WorkerListViewModelTests
@@ -86,7 +87,7 @@
         {
             _workerList.SelectedWorker = null;
 
-            Assert.IsFalse(_workerList.DeleteWorkerCommand.CanExecute(null));
+            Assert.IsFalse(((ICommand)_workerList.DeleteWorkerCommand).CanExecute(null));
         }
 
         [Test]
@@ -94,7 +95,7 @@
         {
             _workerList.SelectedWorker = _workerList.Workers.First();
 
-            Assert.IsTrue(_workerList.DeleteWorkerCommand.CanExecute(null));
+            Assert.IsTrue(((ICommand)_workerList.DeleteWorkerCommand).CanExecute(null));
         }
 
         [Test]

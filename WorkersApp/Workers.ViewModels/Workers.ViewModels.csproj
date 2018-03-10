@@ -28,6 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Prism.Core" Version="7.0.0.396" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="z3r0.Utils">
       <HintPath>External\z3r0.Utils.dll</HintPath>
     </Reference>

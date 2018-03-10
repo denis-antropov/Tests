@@ -4,14 +4,15 @@
     using System.Collections;
     using System.ComponentModel;
     using System.Linq;
+    using System.Windows.Input;
+    using Prism.Mvvm;
     using Workers.BusinessLogic;
-    using System.Runtime.CompilerServices;
     using z3r0.Utils.ViewModels.Commands;
 
     /// <summary>
     /// Represents view model of worker
     /// </summary>
-    public class WorkerViewModel : ViewModelBase, INotifyDataErrorInfo
+    public class WorkerViewModel : BindableBase, INotifyDataErrorInfo
     {
         /// <summary>
         /// Worker instance
@@ -41,11 +42,12 @@
         /// <exception cref="ArgumentNullException">worker is null</exception>
         public WorkerViewModel(IWorker worker)
         {
-            if (worker == null) throw new ArgumentNullException(nameof(worker));
+            _worker = worker ?? throw new ArgumentNullException(nameof(worker));
 
-            _worker = worker;
-            SaveCommand = new RelayCommand(() => Save(), Validate);
-            CancelCommand = new RelayCommand(() => Rollback());
+            SaveCommand = new RelayCommand(Save, Validate)
+                .ObservesProperty(() => Name)
+                .ObservesProperty(() => Surname);
+            CancelCommand = new RelayCommand(Rollback);
             _name = worker.Name;
             _surname = worker.Surname;
         }
@@ -53,12 +55,12 @@
         /// <summary>
         /// Gets the save command
         /// </summary>
-        public RelayCommand SaveCommand { get; private set; }
+        public ICommand SaveCommand { get; }
 
         /// <summary>
         /// Gets cancel command
         /// </summary>
-        public RelayCommand CancelCommand { get; private set; }
+        public ICommand CancelCommand { get; }
 
         /// <summary>
         /// Gets or sets the name of worker
@@ -71,11 +73,7 @@
             }
             set
             {
-                if (_name != value)
-                {
-                    _name = value;
-                    OnPropertyChanged();
-                }
+                SetProperty(ref _name, value);
             }
         }
        
@@ -90,11 +88,7 @@
             }
             set
             {
-                if (_surname != value)
-                {
-                    _surname = value;
-                    OnPropertyChanged();
-                }
+                SetProperty(ref _surname, value);
             }
         }
 
@@ -112,7 +106,7 @@
                 if (Birthday != value)
                 {
                     _worker.Birthday = value;
-                    OnPropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -131,7 +125,7 @@
                 if (Sex != value)
                 {
                     _worker.Sex = value;
-                    OnPropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -150,7 +144,7 @@
                 if (HasChildren != value)
                 {
                     _worker.HasChildren = value;
-                    OnPropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -215,18 +209,6 @@
             }
 
             return new string[0];
-        }
-
-        /// <summary>
-        /// Notifies about changed property
-        /// </summary>
-        /// <param name="propertyName">Name of changed property</param>
-        protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            base.OnPropertyChanged(propertyName);
-
-            SaveCommand.RaiseCanExecuteChanged();
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(nameof(Surname)));
         }
     }
 }

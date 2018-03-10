@@ -1,12 +1,12 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Threading;
-using Workers.Application;
-
-namespace Workers
+﻿namespace Workers
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Threading;
+    using Workers.Application;
+
     class Program
     {
         static App _app;
@@ -44,7 +44,7 @@ namespace Workers
             {
                 await task;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // фиксируем исключение
                 // показываем ошибку пользователю
@@ -78,9 +78,8 @@ namespace Workers
                 ExitRequested?.Invoke(this, EventArgs.Empty);
             };
 
-
-            mainWindow.Show();
             screen.Close(TimeSpan.FromMilliseconds(0));
+            mainWindow.Show();
         }
 
         private void viewModel_CloseRequested(object sender, EventArgs e)

@@ -27,7 +27,7 @@
         public async static Task<WorkerListViewModel> GetWorkerListAsync()
         {
             // Simulate some delay
-            await Task.Delay(TimeSpan.FromSeconds(1));
+            await Task.Delay(0);
 
             _repository = new WorkersRepository(Path.Combine(Environment.CurrentDirectory, "workers.db"));
             var workersService = new WorkerService(_repository);

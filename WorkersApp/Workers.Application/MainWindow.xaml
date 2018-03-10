@@ -4,14 +4,14 @@
         xmlns:views="clr-namespace:Workers.Views;assembly=Workers.Views"
         xmlns:app="clr-namespace:Workers"
         Title="Workers Application" Height="400" Width="600">
-    <Window.Resources>
+    <!--<Window.Resources>
         <ObjectDataProvider x:Key="WorkersData" 
                             ObjectType="{x:Type app:Bootstrapper}"
                             MethodName="GetWorkerList" />
-    </Window.Resources>
+    </Window.Resources>-->
     
     <DockPanel LastChildFill="True">
-        <views:WorkerListControl DataContext="{Binding Source={StaticResource WorkersData}}" />
+        <views:WorkerListControl />
     </DockPanel>
     
 </Window>

@@ -15,7 +15,7 @@
         {
             Refresh();
 
-            OnPropertyChanged(nameof(FullName));
+            RaisePropertyChanged(nameof(FullName));
         }
     }
 }

@@ -1,13 +1,14 @@
 ﻿namespace Workers.ViewModels
 {
     using System;
+    using Prism.Mvvm;
     using Workers.BusinessLogic;
     using Workers.ViewModels.Interfaces;
 
     /// <summary>
     /// Represents simple view model of worker
     /// </summary>
-    public class WorkerItem : ViewModelBase, IWorkerItem
+    public class WorkerItem : BindableBase, IWorkerItem
     {
         /// <summary>
         /// Initializes a new instance of the WorkerItem class
@@ -16,9 +17,7 @@
         /// <exception cref="ArgumentNullException">worker is null</exception>
         public WorkerItem(IWorker worker)
         {
-            if (worker == null) throw new ArgumentNullException(nameof(worker));
-
-            Worker = worker;
+            Worker = worker ?? throw new ArgumentNullException(nameof(worker));
         }
 
         /// <summary>
@@ -97,12 +96,12 @@
         /// </summary>
         public void Refresh()
         {
-            OnPropertyChanged(nameof(Id));
-            OnPropertyChanged(nameof(Name));
-            OnPropertyChanged(nameof(Surname));
-            OnPropertyChanged(nameof(Birthday));
-            OnPropertyChanged(nameof(Sex));
-            OnPropertyChanged(nameof(HasChildren));
+            RaisePropertyChanged(nameof(Id));
+            RaisePropertyChanged(nameof(Name));
+            RaisePropertyChanged(nameof(Surname));
+            RaisePropertyChanged(nameof(Birthday));
+            RaisePropertyChanged(nameof(Sex));
+            RaisePropertyChanged(nameof(HasChildren));
         }
     }
 }
