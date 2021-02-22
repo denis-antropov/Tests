@@ -89,26 +89,16 @@
 
             lock (_popSync)
             {
-                bool needWait = false;
+                // Wait signal from Push method
+                _resetEvent.WaitOne();
+
                 lock (_queue)
                 {
-                    if (_queue.Count == 0)
+                    if (_queue.Count == 1)
                     {
-                        // We should wait while queue will not be empty
-                        needWait = true;
                         _resetEvent.Reset();
                     }
-                }
 
-                if (needWait)
-                {
-                    // Wait signal from Push method
-                    _resetEvent.WaitOne();
-                }
-
-                lock (_queue)
-                {
-                    // Now, we sure that queue has items
                     return _queue.Dequeue();
                 }
             }
