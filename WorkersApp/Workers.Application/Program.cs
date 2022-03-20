@@ -9,57 +9,51 @@
 
     class Program
     {
-        static App _app;
+        private static App _app;
 
-        /// <summary>
-        /// Event handler of Exit event
-        /// </summary>
-        /// <param name="sender">The sender</param>
-        /// <param name="e">The args</param>
-        private void Application_Exit(object sender, System.Windows.ExitEventArgs e)
+        private event EventHandler ExitRequested;
+
+        private void Application_Exit(object sender, ExitEventArgs e)
         {
             Bootstrapper.Dispsose();
         }
 
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             _app = new App();
-            _app.ShutdownMode = System.Windows.ShutdownMode.OnExplicitShutdown;
+            _app.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
             SynchronizationContext.SetSynchronizationContext(
                new DispatcherSynchronizationContext());
 
             var program = new Program();
-            program.ExitRequested += program_ExitRequested;
+            program.ExitRequested += Program_ExitRequested;
             var programTask = program.StartAsync();
 
-            HandleException(programTask);
+            SafeStartup(programTask);
             _app.Run();
         }
 
-        static async void HandleException(Task task)
+        private static async void SafeStartup(Task task)
         {
             try
             {
                 await task;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // фиксируем исключение
-                // показываем ошибку пользователю
+                new UserInteraction().NotifyInformation(ex.Message);
                 _app.Shutdown();
             }
         }
 
-        static void program_ExitRequested(object sender, EventArgs e)
+        private static void Program_ExitRequested(object sender, EventArgs e)
         {
             _app.Shutdown();
         }
 
-        public event EventHandler ExitRequested;
-
-        public async Task StartAsync()
+        private async Task StartAsync()
         {
             SplashScreen screen = new SplashScreen("SplashScreen.png");
 
@@ -82,7 +76,7 @@
             mainWindow.Show();
         }
 
-        private void viewModel_CloseRequested(object sender, EventArgs e)
+        private void ViewModel_CloseRequested(object sender, EventArgs e)
         {
             Bootstrapper.Dispsose();
         }

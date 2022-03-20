@@ -32,6 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="z3r0.MvvmUtils">
+      <HintPath>External\z3r0.MvvmUtils.dll</HintPath>
+    </Reference>
     <Reference Include="z3r0.Utils">
       <HintPath>External\z3r0.Utils.dll</HintPath>
     </Reference>

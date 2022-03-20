@@ -8,7 +8,6 @@
     using Workers.ViewModels;
     using Workers.ViewModels.Interfaces;
     using Workers.Views;
-    using z3r0.MvvmUtils.Views.Xaml;
 
     /// <summary>
     /// Represents a bootstrapper of application
@@ -32,7 +31,7 @@
             _repository = new WorkersRepository(Path.Combine(Environment.CurrentDirectory, "workers.db"));
             var workersService = new WorkerService(_repository);
             var workerModifier = new WorkerModifier();
-            var workerList = new WorkerListViewModel(workersService, workerModifier, new WorkerItemFactory(), new MessageBoxUserInteraction("Workers"));
+            var workerList = new WorkerListViewModel(workersService, workerModifier, new WorkerItemFactory(), new UserInteraction());
 
             return workerList;
         }
@@ -42,7 +41,7 @@
         /// </summary>
         internal static void Dispsose()
         {
-            if(_repository != null)
+            if (_repository != null)
             {
                 _repository.Dispose();
             }

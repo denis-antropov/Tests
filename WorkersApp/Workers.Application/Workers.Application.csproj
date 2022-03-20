@@ -72,9 +72,6 @@
     <Reference Include="Microsoft.EntityFrameworkCore.Sqlite, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.EntityFrameworkCore.Sqlite.1.1.2\lib\net451\Microsoft.EntityFrameworkCore.Sqlite.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.ExceptionMessageBox">
-      <HintPath>..\Workers.Views\External\Microsoft.ExceptionMessageBox.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Extensions.Caching.Abstractions, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Caching.Abstractions.1.1.1\lib\netstandard1.0\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
     </Reference>
@@ -203,7 +200,7 @@
     </Reference>
     <Reference Include="System.Transactions" />
     <Reference Include="System.Windows.Interactivity">
-      <HintPath>..\Workers.Views\External\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\Workers.ViewModels\External\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -219,12 +216,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Xceed.Wpf.Toolkit">
-      <HintPath>..\Workers.Views\External\Xceed.Wpf.Toolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="z3r0.MvvmUtils">
-      <HintPath>..\Workers.Views\External\z3r0.MvvmUtils.dll</HintPath>
-    </Reference>
     <Reference Include="z3r0.Utils">
       <HintPath>..\Workers.ViewModels\External\z3r0.Utils.dll</HintPath>
     </Reference>
@@ -251,6 +242,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="UserInteraction.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
