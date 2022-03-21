@@ -49,11 +49,11 @@
         {
             get
             {
-                if (_disposed)
-                    throw new ObjectDisposedException(Localization.strInstanceIsDisposed);
-
                 lock (_queue)
                 {
+                    if (_disposed)
+                        throw new ObjectDisposedException(Localization.strInstanceIsDisposed);
+
                     return _queue.Count;
                 }
             }
@@ -66,11 +66,11 @@
         /// <exception cref="ObjectDisposedException">The instance is disposed</exception>
         public void Push(T item)
         {
-            if (_disposed)
-                throw new ObjectDisposedException(Localization.strInstanceIsDisposed);
-
             lock (_queue)
             {
+                if (_disposed)
+                    throw new ObjectDisposedException(Localization.strInstanceIsDisposed);
+
                 _queue.Enqueue(item);
                 _resetEvent.Set();
             }
@@ -84,9 +84,6 @@
         /// <exception cref="ObjectDisposedException">The instance is disposed</exception>
         public T Pop()
         {
-            if(_disposed)
-                throw new ObjectDisposedException(Localization.strInstanceIsDisposed);
-
             lock (_popSync)
             {
                 // Wait signal from Push method
@@ -94,6 +91,9 @@
 
                 lock (_queue)
                 {
+                    if (_disposed)
+                        throw new ObjectDisposedException(Localization.strInstanceIsDisposed);
+
                     if (_queue.Count == 1)
                     {
                         _resetEvent.Reset();
@@ -110,14 +110,15 @@
         /// </summary>
         public void Dispose()
         {
-            if (_disposed)
-                return;
+            lock (_queue)
+            {
+                if (_disposed)
+                    return;
 
-            _resetEvent.Dispose();
-            _queue.Clear();
-            _disposed = true;
-
-            GC.SuppressFinalize(this);
+                _resetEvent.Dispose();
+                _queue.Clear();
+                _disposed = true;
+            }
         }
     }
 }

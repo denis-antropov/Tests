@@ -1,10 +1,10 @@
 ﻿namespace UnitTests
 {
-    using NUnit.Framework;
-    using Queue;
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+    using NUnit.Framework;
+    using Queue;
 
     [TestFixture]
     public class RichQueueTests
