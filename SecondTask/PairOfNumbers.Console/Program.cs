@@ -2,38 +2,30 @@
 {
     using System;
 
-    /// <summary>
-    /// Entry class
-    /// </summary>
-    class Program
+    internal class Program
     {
-        /// <summary>
-        /// Entry method
-        /// </summary>
-        static void Main()
+        private static void Main()
         {
-            Appliaction app = new Appliaction(new ConsoleUserInteraction());
-            app.Run();
+            var userInteraction = new ConsoleUserInteraction();
+            Appliaction app = new Appliaction(userInteraction);
+            try
+            {
+                app.Run();
+            }
+            catch (ApplicationException ex)
+            {
+                userInteraction.DisplayInfo(ex.Message);
+                Environment.ExitCode = 1;
+            }
         }
 
-        /// <summary>
-        /// Represents iplementation of IUserInteraction interface using console
-        /// </summary>
-        class ConsoleUserInteraction : IUserInteraction
+        private class ConsoleUserInteraction : IUserInteraction
         {
-            /// <summary>
-            /// Displays the message
-            /// </summary>
-            /// <param name="message">The message to display</param>
             public void DisplayInfo(string message)
             {
                 Console.WriteLine(message);
             }
 
-            /// <summary>
-            /// Reads user input
-            /// </summary>
-            /// <returns>The user text input</returns>
             public string ReadUserInput()
             {
                 return Console.ReadLine();

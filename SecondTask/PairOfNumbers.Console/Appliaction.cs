@@ -3,90 +3,75 @@
     using System;
     using System.Collections.Generic;
 
-    /// <summary>
-    /// Represents main application
-    /// </summary>
     internal class Appliaction
     {
         private readonly IUserInteraction _userInteraction;
 
-        /// <summary>
-        /// Initializes a new instance of the Appliaction class
-        /// </summary>
-        /// <exception cref="ArgumentNullException">userInteraction is null</exception>
         internal Appliaction(IUserInteraction userInteraction)
         {
-            if (userInteraction == null)
-                throw new ArgumentNullException(nameof(userInteraction));
-
-            _userInteraction = userInteraction;
+            _userInteraction = userInteraction ?? throw new ArgumentNullException(nameof(userInteraction));
         }
 
-        /// <summary>
-        /// Runs application
-        /// </summary>
         internal void Run()
         {
-            _userInteraction.DisplayInfo("This application displays pairs from an imput list. Sum of these pairs equal specific value X");
+            _userInteraction.DisplayInfo("This application displays pairs from an input list. Sum of these pairs equal specific value X");
             _userInteraction.DisplayInfo(string.Empty);
 
+            var numberList = GetNumberList();
+            var sumOfPairs = GetSummOfPairs();
+
+            try
+            {
+                var pairs = NumberTool.MatchSumOfPairs(numberList, sumOfPairs);
+
+                DisplayPairs(pairs);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ApplicationException(ex.Message);
+            }
+        }
+
+        private IReadOnlyCollection<int> GetNumberList()
+        {
             _userInteraction.DisplayInfo("Enter an input list of numbers (Int32) separated by space ' ':");
             _userInteraction.DisplayInfo("Example: 1 3 5 6");
             var line = _userInteraction.ReadUserInput();
 
             if (string.IsNullOrEmpty(line))
             {
-                _userInteraction.DisplayInfo("The line is empty.");
-                return;
+                throw new ApplicationException("The line is empty.");
             }
 
             var stringList = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            IEnumerable<int> numberList;
-            try
-            {
-                numberList = ConvertToIntArray(stringList);
-            }
-            catch (ArgumentException ex)
-            {
-                _userInteraction.DisplayInfo(ex.Message);
-                return;
-            }
-
-            _userInteraction.DisplayInfo("Enter X - sum of pair:");
-            line = _userInteraction.ReadUserInput();
-            if (string.IsNullOrEmpty(line))
-            {
-                _userInteraction.DisplayInfo("The line is empty.");
-                return;
-            }
-
-            int x;
-            if (!int.TryParse(line, out x))
-            {
-                _userInteraction.DisplayInfo("The X is invalid.");
-                return;
-            }
-
-            var pairs = NumberTool.MatchSumOfPairs(numberList, x);
-
-            DisplayPairs(pairs);
+            return ConvertToIntArray(stringList);
         }
 
-        /// <summary>
-        /// Convert string list to number list
-        /// </summary>
-        /// <param name="stringList">The string list</param>
-        /// <returns>The number list</returns>
-        /// <exception cref="ArgumentException">Unable to convert string list to number list</exception>
-        private IEnumerable<int> ConvertToIntArray(string[] stringList)
+        private int GetSummOfPairs()
+        {
+            _userInteraction.DisplayInfo("Enter X - sum of pair:");
+            var line = _userInteraction.ReadUserInput();
+            if (string.IsNullOrEmpty(line))
+            {
+                throw new ApplicationException("The line is empty.");
+            }
+
+            if (!int.TryParse(line, out int x))
+            {
+                throw new ApplicationException("The X is invalid.");
+            }
+
+            return x;
+        }
+
+        private IReadOnlyCollection<int> ConvertToIntArray(string[] stringList)
         {
             var numberList = new int[stringList.Length];
             for (int i = 0; i < stringList.Length; i++)
             {
-                int number;
-                if (!int.TryParse(stringList[i], out number))
+                if (!int.TryParse(stringList[i], out int number))
                 {
-                    throw new ArgumentException($"Unable to convert value '{stringList[i]}' to Int32");
+                    throw new ApplicationException($"Unable to convert value '{stringList[i]}' to Int32");
                 }
 
                 numberList[i] = number;
@@ -95,10 +80,6 @@
             return numberList;
         }
 
-        /// <summary>
-        /// Displays pairs
-        /// </summary>
-        /// <param name="pairs">Source pairs</param>
         private void DisplayPairs(IEnumerable<ValuesPair> pairs)
         {
             foreach (var item in pairs)

@@ -13,27 +13,28 @@
         /// Matches sum of pairs of input collection.
         /// </summary>
         /// <param name="inputCollection">Input collection for matches</param>
-        /// <param name="x">Required sum of pairs</param>
+        /// <param name="sumOfPairs">Required sum of pairs</param>
         /// <returns>Sum of pairs</returns>
         /// <exception cref="ArgumentNullException">inputCollection is null</exception>
         /// <exception cref="ArgumentException">inputCollection has invalid numbers</exception>
-        public static IEnumerable<ValuesPair> MatchSumOfPairs(IEnumerable<int> inputCollection, int x)
+        public static IEnumerable<ValuesPair> MatchSumOfPairs(IEnumerable<int> inputCollection, int sumOfPairs)
         {
             if (inputCollection == null)
                 throw new ArgumentNullException(nameof(inputCollection));
 
             var inputArray = inputCollection.ToArray();
             Array.Sort(inputArray);
-            List<ValuesPair> pairs = new List<ValuesPair>();
+            var pairs = new List<ValuesPair>();
 
-            int lastIndex = inputArray.Length - 1;
-            int firstIndex = 0;
+            var lastIndex = inputArray.Length - 1;
+            var firstIndex = 0;
+
             while (firstIndex < lastIndex)
             {
-                int sum = 0;
                 var firstItem = inputArray[firstIndex];
                 var lastItem = inputArray[lastIndex];
 
+                int sum;
                 try
                 {
                     checked
@@ -44,34 +45,36 @@
                 catch (OverflowException ex)
                 {
                     throw new ArgumentException(
-                        string.Format(Localization.strSumIsTooBig, 
+                        string.Format(Localization.strSumIsTooBig,
                             firstIndex, firstItem, lastIndex, lastItem, int.MaxValue),
                         ex);
                 }
-                
-                if (sum == x)
+
+                if (sum == sumOfPairs)
                 {
-                    pairs.Add(new ValuesPair { Value1 = firstItem, Value2 = lastItem });
+                    // Exclude duplicates
+                    if (pairs.Count == 0 || pairs.Last().Value1 != firstItem)
+                    {
+                        var pair = new ValuesPair { Value1 = firstItem, Value2 = lastItem };
+                        pairs.Add(pair);
+                    }
+                    
                     firstIndex++;
                     lastIndex--;
                 }
+                else if (sum < sumOfPairs)
+                {
+                    // Current lastItem cannot be bigger, therefore for current firstItem there is no pair
+                    firstIndex++;
+                }
                 else
                 {
-                    if (sum < x)
-                    {
-                        // Current lastItem cannot be bigger, therefore for current firstItem there is no pair
-                        firstIndex++;
-                    }
-                    else
-                    {
-                        // Current firstItem cannot be smaller, therefore for current lastItem there is no pair
-                        lastIndex--;
-                    }
+                    // Current firstItem cannot be smaller, therefore for current lastItem there is no pair
+                    lastIndex--;
                 }
             }
 
-            // Remove duplicates
-            return pairs.Distinct();
+            return pairs;
         }
     }
 }

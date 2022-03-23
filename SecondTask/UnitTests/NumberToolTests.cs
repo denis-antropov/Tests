@@ -40,7 +40,7 @@
             var outputCollection = NumberTool.MatchSumOfPairs(inputCollection, x);
 
             CollectionAssert.IsNotEmpty(outputCollection);
-            Assert.IsTrue(outputCollection.Count() == 1);
+            Assert.AreEqual(1, outputCollection.Count());
             Assert.AreEqual(x, outputCollection.Single().Value1 + outputCollection.Single().Value2);
         }
 
@@ -53,7 +53,7 @@
             var outputCollection = NumberTool.MatchSumOfPairs(inputCollection, x);
 
             CollectionAssert.IsNotEmpty(outputCollection);
-            Assert.IsTrue(outputCollection.Count() == 2);
+            Assert.AreEqual(2, outputCollection.Count());
             Assert.IsTrue(outputCollection.All(p => p.Value1 + p.Value2 == x));
         }
 
@@ -83,7 +83,7 @@
             var outputCollection = NumberTool.MatchSumOfPairs(inputCollection, x);
 
             CollectionAssert.IsNotEmpty(outputCollection);
-            Assert.IsTrue(outputCollection.Count() == 1);
+            Assert.AreEqual(1, outputCollection.Count());
             Assert.AreEqual(x, outputCollection.Single().Value1 + outputCollection.Single().Value2);
         }
 
@@ -96,7 +96,7 @@
             var outputCollection = NumberTool.MatchSumOfPairs(inputCollection, x);
 
             CollectionAssert.IsNotEmpty(outputCollection);
-            Assert.IsTrue(outputCollection.Count() == 1);
+            Assert.AreEqual(1, outputCollection.Count());
             Assert.AreEqual(x, outputCollection.Single().Value1 + outputCollection.Single().Value2);
         }
     }
