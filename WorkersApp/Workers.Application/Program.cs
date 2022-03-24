@@ -60,11 +60,9 @@
             screen.Show(false);
 
             var viewModel = await Bootstrapper.GetWorkerListAsync();
-            // viewModel.CloseRequested += viewModel_CloseRequested;
-            // await viewModel.InitializeAsync();
-
             var mainWindow = new MainWindow();
             mainWindow.DataContext = viewModel;
+
             mainWindow.Closed += (s, e) =>
             {
                 // viewModel.RequestClose();

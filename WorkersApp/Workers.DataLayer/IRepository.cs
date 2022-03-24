@@ -1,6 +1,6 @@
 ﻿namespace Workers.DataLayer
 {
-    using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Represents a repository of specific entity
@@ -12,7 +12,7 @@
         /// Returns the list of entities
         /// </summary>
         /// <returns>The list of entities</returns>
-        IEnumerable<T> GetEntities();
+        IQueryable<T> GetEntities();
 
         /// <summary>
         /// Saves modified entity

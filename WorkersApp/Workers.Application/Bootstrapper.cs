@@ -25,15 +25,12 @@
         /// <returns>WorkerListViewModel instance</returns>
         public async static Task<WorkerListViewModel> GetWorkerListAsync()
         {
-            // Simulate some delay
-            await Task.Delay(0);
-
             _repository = new WorkersRepository(Path.Combine(Environment.CurrentDirectory, "workers.db"));
             var workersService = new WorkerService(_repository);
             var workerModifier = new WorkerModifier();
             var workerList = new WorkerListViewModel(workersService, workerModifier, new WorkerItemFactory(), new UserInteraction());
 
-            return workerList;
+            return await Task.FromResult(workerList);
         }
 
         /// <summary>

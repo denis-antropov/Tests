@@ -1,12 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-using Workers.ViewModels;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using z3r0.Utils;
-
-namespace Workers.Views
+﻿namespace Workers.Views
 {
+    using System;
+    using System.Threading.Tasks;
+    using Workers.ViewModels;
+    using Xamarin.Forms;
+    using Xamarin.Forms.Xaml;
+    using z3r0.Utils;
+
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class WorkersPage : ContentPage
     {

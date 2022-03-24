@@ -1,7 +1,7 @@
 ﻿namespace Workers.DataLayer
 {
     using System;
-    using System.Collections.Generic;
+    using System.Linq;
     using Microsoft.EntityFrameworkCore;
 
     /// <summary>
@@ -28,7 +28,7 @@
         /// Returns the list of entities
         /// </summary>
         /// <returns>The list of entities</returns>
-        public IEnumerable<WorkerEntity> GetEntities()
+        public IQueryable<WorkerEntity> GetEntities()
         {
             return _ctx.Workers;
         }

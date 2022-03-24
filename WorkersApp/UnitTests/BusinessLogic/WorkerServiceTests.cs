@@ -7,30 +7,31 @@
     using NUnit.Framework;
     using Workers.BusinessLogic;
     using Workers.DataLayer;
-    using System.IO;
 
     [TestFixture]
     public class WorkerServiceTests
     {
         private Mock<IRepository<WorkerEntity>> _repository;
         private WorkerService _workerService;
+        private List<WorkerEntity> _entitiesMock;
 
         [SetUp]
         public void Initializtion()
         {
-            _repository = new Mock<IRepository<WorkerEntity>>();
-            _repository.Setup(r => r.GetEntities()).Returns(GetMockEntities);
-
-            _workerService = new WorkerService(_repository.Object);
-        }
-
-        private IEnumerable<WorkerEntity> GetMockEntities()
-        {
-            return new List<WorkerEntity>
+            _entitiesMock = new List<WorkerEntity>
                 {
                     new WorkerEntity {Id = 5, Name= "Vasya", Surname = "Ivanov"},
                     new WorkerEntity {Id = 6, Name= "Addard", Surname = "Stark"}
                 };
+
+            _repository = new Mock<IRepository<WorkerEntity>>();
+            _repository.Setup(r => r.GetEntities()).Returns(() => _entitiesMock.AsQueryable());
+            _repository.Setup(r => r.Add(It.IsAny<WorkerEntity>()))
+                .Callback<WorkerEntity>(e => _entitiesMock.Add(e));
+            _repository.Setup(r => r.Delete(It.IsAny<WorkerEntity>()))
+                .Callback<WorkerEntity>(e => _entitiesMock.RemoveAll(es => es.Id == e.Id));
+
+            _workerService = new WorkerService(_repository.Object);
         }
 
         [Test]
@@ -68,16 +69,14 @@
         [Test]
         public void SaveResetsNewIdFlagAndSavesInStore()
         {
-            WorkerEntity entity = null;
-            _repository.Setup(r => r.Add(It.IsAny<WorkerEntity>())).Callback<WorkerEntity>(e => entity = e);
-
             var worker = _workerService.CreateNew();
+            worker.Name = "Simple name";
+            worker.Surname = "Surname";
             worker.Save();
                         
             Assert.IsFalse(worker.IsNew);
             CollectionAssert.Contains(_workerService.GetWorkers().Select(w => w.Id), worker.Id);
-            Assert.IsNotNull(entity);
-            Assert.AreEqual(worker.Id, entity.Id);
+            CollectionAssert.Contains(_entitiesMock.Select(e => e.Id), worker.Id);
         }
 
         [Test]
@@ -132,13 +131,10 @@
         [Test]
         public void RemovesWorkerFromStore()
         {
-            bool deleteCalled = false;
-            _repository.Setup(r => r.Delete(It.IsAny<WorkerEntity>())).Callback(() => deleteCalled = true);
             var worker = _workerService.GetWorkers().First();
             worker.Delete();
 
             CollectionAssert.DoesNotContain(_workerService.GetWorkers().Select(w => w.Id), worker.Id);
-            Assert.IsTrue(deleteCalled);
         }
 
         [Test]
@@ -167,6 +163,15 @@
             worker.Rollback();
 
             Assert.AreNotEqual("Zina", worker.Name);
+        }
+
+        private List<WorkerEntity> GetMockEntities()
+        {
+            return new List<WorkerEntity>
+                {
+                    new WorkerEntity {Id = 5, Name= "Vasya", Surname = "Ivanov"},
+                    new WorkerEntity {Id = 6, Name= "Addard", Surname = "Stark"}
+                };
         }
     }
 }

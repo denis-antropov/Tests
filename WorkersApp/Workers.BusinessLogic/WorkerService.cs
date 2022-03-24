@@ -16,11 +16,6 @@
         private readonly IRepository<WorkerEntity> _repository;
 
         /// <summary>
-        /// Map of workers and them entities
-        /// </summary>
-        private Dictionary<Worker, WorkerEntity> _workers;
-
-        /// <summary>
         /// Initializes a new instance of the Worker class
         /// </summary>
         /// <param name="repository">Repository of workers</param>
@@ -33,32 +28,15 @@
         }
 
         /// <summary>
-        /// Gets lazy list of workers
-        /// </summary>
-        private Dictionary<Worker, WorkerEntity> Workers
-        {
-            get
-            {
-                if (_workers == null)
-                {
-                    _workers = new Dictionary<Worker, WorkerEntity>();
-                    foreach (var e in _repository.GetEntities())
-                    {
-                        _workers.Add(MapToWorker(e), e);
-                    }
-                }
-
-                return _workers;
-            }
-        }
-
-        /// <summary>
         /// Returns a list of Workers from the store
         /// </summary>
         /// <returns>A list of Workers from the store</returns>
         public IEnumerable<IWorker> GetWorkers()
         {
-            return Workers.Keys;
+            foreach (var e in _repository.GetEntities())
+            {
+                yield return MapToWorker(e);
+            }
         }
 
         /// <summary>
@@ -82,12 +60,13 @@
             {
                 entity = new WorkerEntity();
                 MapToWorkerEntity(worker, entity);
-                Workers.Add(worker, entity);
                 _repository.Add(entity);
 
                 return;
             }
-            else if(Workers.TryGetValue(worker, out entity))
+
+            entity = GetEntityById(worker.Id);
+            if (entity != null)
             {
                 MapToWorkerEntity(worker, entity);
             }
@@ -105,13 +84,12 @@
         /// <param name="item">Item to delete</param>
         protected override void DeleteInternal(Worker worker)
         {
-            WorkerEntity entity;
-            if (!Workers.TryGetValue(worker, out entity))
+            var entity = GetEntityById(worker.Id);
+            if (entity == null)
             {
                 throw new ArgumentException(Localization.strNotFoundWorker);
             }
 
-            Workers.Remove(worker);
             _repository.Delete(entity);
         }
 
@@ -121,8 +99,8 @@
         /// <param name="item">Item to rollback</param>
         protected override void RollbackInternal(Worker worker)
         {
-            WorkerEntity entity;
-            if (!Workers.TryGetValue(worker, out entity))
+            var entity = GetEntityById(worker.Id);
+            if (entity == null)
             {
                 throw new ArgumentException(Localization.strNotFoundWorker);
             }
@@ -136,13 +114,15 @@
         /// <returns>The vacant Id</returns>
         protected override int GetVacantId()
         {
-            var worker = GetWorkers().OrderByDescending(e => e.Id).FirstOrDefault();
-            if (worker == null)
+            try
+            {
+                var maxId = _repository.GetEntities().Max(e => e.Id);
+                return (int)maxId + 1;
+            }
+            catch (InvalidOperationException)
             {
                 return 0;
             }
-
-            return worker.Id + 1;
         }
 
         /// <summary>
@@ -185,6 +165,11 @@
             entity.Birthday = worker.Birthday;
             entity.Sex = (long)worker.Sex;
             entity.HasChildren = Convert.ToInt64(worker.HasChildren);
+        }
+
+        private WorkerEntity GetEntityById(int id)
+        {
+            return _repository.GetEntities().SingleOrDefault(e => e.Id == id);
         }
     }
 }
