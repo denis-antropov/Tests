@@ -5,13 +5,13 @@ Tasks:
 2. There are a collection of numbers and a special number X. It is required to print pairs of collection numbers, sum of each pair should be equals to X.
 
 3. It is required to create an application which should communicate with a database. The database should contain a Worker table with columns: Id, Name, Surname, Birthdate, Sex, HasChildren.
-    The application should contain next features:
+The application should contain next features:
     1) show list of workers
     2) adding a new worker
     3) editing an existent worker
     4) removing a worker
 
-    Technical requirements:
+Technical requirements:
     1) WPF (MVVM) - *(I added Xamarin project as well)*
     2) using of ORM (any)
     3) split application into layers (data layer, business logic, UI)
