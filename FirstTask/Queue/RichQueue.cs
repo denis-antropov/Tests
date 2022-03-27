@@ -115,10 +115,12 @@
                 if (_disposed)
                     return;
 
-                _resetEvent.Dispose();
                 _queue.Clear();
                 _disposed = true;
             }
+
+            _resetEvent.Set();
+            _resetEvent.Dispose();
         }
     }
 }

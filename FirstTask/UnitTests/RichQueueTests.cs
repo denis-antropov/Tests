@@ -12,7 +12,7 @@
         [Test]
         public void PushIncreasesCount()
         {
-            using (RichQueue<int> richQueue = new RichQueue<int>())
+            using (var richQueue = new RichQueue<int>())
             {
                 richQueue.Push(5);
                 richQueue.Push(7);
@@ -24,7 +24,7 @@
         [Test]
         public void PopReturnsPushedItem()
         {
-            using (RichQueue<int> richQueue = new RichQueue<int>())
+            using (var richQueue = new RichQueue<int>())
             {
                 richQueue.Push(5);
                 var actualValue = richQueue.Pop();
@@ -36,7 +36,7 @@
         [Test]
         public void PopDecreasesCount()
         {
-            using (RichQueue<int> richQueue = new RichQueue<int>())
+            using (var richQueue = new RichQueue<int>())
             {
                 richQueue.Push(5);
                 var countBeforePop = richQueue.Count;
@@ -50,7 +50,7 @@
         [Test]
         public void PopTwiseReturnsTwoPushedItem()
         {
-            using (RichQueue<int> richQueue = new RichQueue<int>())
+            using (var richQueue = new RichQueue<int>())
             {
                 richQueue.Push(5);
                 richQueue.Push(7);
@@ -66,61 +66,64 @@
         [Test]
         public void PopWaitsWhenItemWillBeAvailable()
         {
-            using (RichQueue<int> richQueue = new RichQueue<int>())
+            using (var richQueue = new RichQueue<int>())
             {
-                ManualResetEvent resetEvent = new ManualResetEvent(false);
-                var task = Task.Run(() =>
+                using (var resetEvent = new ManualResetEvent(false))
                 {
-                    resetEvent.Set();
+                    var task = Task.Run(() =>
+                    {
+                        resetEvent.Set();
 
-                    return richQueue.Pop();
-                });
+                        return richQueue.Pop();
+                    });
 
-                // Wait when Pop task begin
-                resetEvent.WaitOne();
-                richQueue.Push(5);
+                    // Wait when Pop task begin
+                    resetEvent.WaitOne();
+                    richQueue.Push(5);
 
-                Assert.AreEqual(5, task.Result);
+                    Assert.AreEqual(5, task.Result);
+                }
             }
         }
 
         [Test]
         public void TwoPopsWaitWhenItemsWillBeAvailable()
         {
-            using (RichQueue<int> richQueue = new RichQueue<int>())
+            using (var richQueue = new RichQueue<int>())
             {
-                AutoResetEvent resetEvent = new AutoResetEvent(false);
-
-                var task1 = Task.Run(() =>
+                using (var resetEvent = new AutoResetEvent(false))
                 {
-                    resetEvent.Set();
-                    return richQueue.Pop();
-                });
+                    var task1 = Task.Run(() =>
+                    {
+                        resetEvent.Set();
+                        return richQueue.Pop();
+                    });
 
-                // Wait when Pop task begin
-                resetEvent.WaitOne();
+                    // Wait when Pop task begin
+                    resetEvent.WaitOne();
 
-                var task2 = Task.Run(() =>
-                {
-                    resetEvent.Set();
-                    return richQueue.Pop();
-                });
+                    var task2 = Task.Run(() =>
+                    {
+                        resetEvent.Set();
+                        return richQueue.Pop();
+                    });
 
-                // Wait when Pop task begin
-                resetEvent.WaitOne();
+                    // Wait when Pop task begin
+                    resetEvent.WaitOne();
 
-                richQueue.Push(5);
-                richQueue.Push(7);
+                    richQueue.Push(5);
+                    richQueue.Push(7);
 
-                Assert.AreEqual(5, task1.Result);
-                Assert.AreEqual(7, task2.Result);
+                    Assert.AreEqual(5, task1.Result);
+                    Assert.AreEqual(7, task2.Result);
+                }
             }
         }
 
         [Test]
         public void PushThrowsOnDisposedObject()
         {
-            RichQueue<int> richQueue = new RichQueue<int>();
+            var richQueue = new RichQueue<int>();
             richQueue.Dispose();
 
             Assert.Catch<ObjectDisposedException>(() => richQueue.Push(5));
@@ -129,7 +132,7 @@
         [Test]
         public void PopThrowsOnDisposedObject()
         {
-            RichQueue<int> richQueue = new RichQueue<int>();
+            var richQueue = new RichQueue<int>();
             richQueue.Push(5);
             richQueue.Dispose();
 
@@ -139,7 +142,7 @@
         [Test]
         public void CountThrowsOnDisposedObject()
         {
-            RichQueue<int> richQueue = new RichQueue<int>();
+            var richQueue = new RichQueue<int>();
             richQueue.Push(5);
             richQueue.Dispose();
 
@@ -152,9 +155,31 @@
         [Test]
         public void SeveralDisposeCallsNotThrowsException()
         {
-            RichQueue<int> richQueue = new RichQueue<int>();
+            var richQueue = new RichQueue<int>();
             richQueue.Dispose();
             richQueue.Dispose();
+        }
+
+        [Test]
+        public void DisposeResetsWaitingPopsAndThrowsException()
+        {
+            using (var resetEvent = new ManualResetEvent(false))
+            {
+                var richQueue = new RichQueue<int>();
+                var task = Task.Run(() =>
+                {
+                    resetEvent.Set();
+                    return richQueue.Pop();
+                });
+
+                // Wait when Pop task begin
+                resetEvent.WaitOne();
+
+                richQueue.Dispose();
+
+                Assert.Throws<AggregateException>(() => task.Wait());
+                Assert.IsInstanceOf<ObjectDisposedException>(task.Exception.InnerException);
+            }
         }
     }
 }
