@@ -54,7 +54,7 @@
 
         public async Task<UserAnswer> NotifyQuestionAsync(string caption, string text, UserOptions options)
         {
-            UserAnswer answer = UserAnswer.Cancel;
+            var answer = UserAnswer.Cancel;
             bool result;
 
             switch (options)

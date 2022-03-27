@@ -7,7 +7,7 @@
         private static void Main()
         {
             var userInteraction = new ConsoleUserInteraction();
-            Appliaction app = new Appliaction(userInteraction);
+            var app = new Appliaction(userInteraction);
             try
             {
                 app.Run();

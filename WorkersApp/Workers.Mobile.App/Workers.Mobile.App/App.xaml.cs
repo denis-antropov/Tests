@@ -18,7 +18,7 @@
 
         public App()
         {
-            WorkersPage page = new WorkersPage();
+            var page = new WorkersPage();
             page.BindingContext = GetWorkerList(page);
 
             MainPage = new NavigationPage(page);
@@ -79,7 +79,7 @@
             public void Modify(IWorker worker)
             {
                 _worker = worker;
-                WorkerPage workerWindow = new WorkerPage();
+                var workerWindow = new WorkerPage();
                 workerWindow.BindingContext = new WorkerViewModel(worker);
                 workerWindow.Disappearing += WorkerPageDisappearing;
 

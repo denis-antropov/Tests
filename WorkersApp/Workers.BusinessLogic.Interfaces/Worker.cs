@@ -163,7 +163,7 @@
         /// <returns>true if the specified object is equal to the current object; otherwise, false.</returns>
         public override bool Equals(object obj)
         {
-            Worker worker = obj as Worker;
+            var worker = obj as Worker;
             if (worker == null)
                 return false;
 

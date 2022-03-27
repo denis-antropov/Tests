@@ -67,7 +67,7 @@
         private IReadOnlyCollection<int> ConvertToIntArray(string[] stringList)
         {
             var numberList = new int[stringList.Length];
-            for (int i = 0; i < stringList.Length; i++)
+            for (var i = 0; i < stringList.Length; i++)
             {
                 if (!int.TryParse(stringList[i], out int number))
                 {

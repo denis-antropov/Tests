@@ -37,7 +37,7 @@
         /// <summary>
         /// The seletected worker item
         /// </summary>
-        private IWorkerItem _selcectedWorker;
+        private IWorkerItem _selectedWorker;
 
         /// <summary>
         /// Initializes a new instance of the IWorkerItem class
@@ -85,8 +85,8 @@
         /// </summary>
         public IWorkerItem SelectedWorker
         {
-            get => _selcectedWorker;
-            set => SetProperty(ref _selcectedWorker, value);
+            get => _selectedWorker;
+            set => SetProperty(ref _selectedWorker, value);
         }
         
         /// <summary>
@@ -114,7 +114,7 @@
                 UserOptions.YesNo);
             if (result == UserAnswer.Yes)
             {
-                var workerToDelete = _selcectedWorker;
+                var workerToDelete = _selectedWorker;
                 SelectedWorker = null;
 
                 workerToDelete.Worker.Delete();

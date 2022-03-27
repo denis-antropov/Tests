@@ -58,7 +58,7 @@
             /// <returns>True, if worker is modified and saved; otherwise - false</returns>
             public void Modify(IWorker worker)
             {
-                WorkerWindow workerWindow = new WorkerWindow();
+                var workerWindow = new WorkerWindow();
                 workerWindow.DataContext = new WorkerViewModel(worker);
 
                 var dialogResult = workerWindow.ShowDialog();

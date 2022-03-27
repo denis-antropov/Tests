@@ -55,7 +55,7 @@
 
         private async Task StartAsync()
         {
-            SplashScreen screen = new SplashScreen("SplashScreen.png");
+            var screen = new SplashScreen("SplashScreen.png");
 
             screen.Show(false);
 
